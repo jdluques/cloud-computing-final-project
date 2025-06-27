@@ -1,0 +1,90 @@
+org: jdluques
+service: api-productos
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: ${env:AWS_REGION}
+  environment:
+    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+    AWS_REGION: ${env:AWS_REGION}
+    DYNAMODB_TABLE_PRODUCTS: ${env:DYNAMODB_TABLE_PRODUCTS}
+    JWT_SECRET: your-secret-key
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:*
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${env:DYNAMODB_TABLE_PURCHASES}"
+
+plugins:
+  - serverless-dotenv-plugin
+
+functions:
+  createProduct:
+    handler: src/createProduct.handler
+    events:
+      - http:
+          path: products
+          method: post
+
+  listProducts:
+    handler: src/listProducts.handler
+    events:
+      - http:
+          path: products
+          method: get
+
+  getProduct:
+    handler: src/getProduct.handler
+    events:
+      - http:
+          path: products/{productId}
+          method: get
+          request:
+            parameters:
+              paths:
+                productId: true
+
+  updateProduct:
+    handler: src/updateProduct.handler
+    events:
+      - http:
+          path: products/{productId}
+          method: put
+          request:
+            parameters:
+              paths:
+                productId: true
+
+  deleteProduct:
+    handler: src/deleteProduct.handler
+    events:
+      - http:
+          path: products/{productId}
+          method: delete
+          request:
+            parameters:
+              paths:
+                productId: true
+
+resources:
+  Resources:
+    ProductsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:PRODUCTS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: tenantId
+            AttributeType: S
+          - AttributeName: productCode
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenantId
+            KeyType: HASH
+          - AttributeName: productCode
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
