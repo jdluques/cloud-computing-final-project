@@ -1,0 +1,71 @@
+org: jdluques
+service: api-usuarios
+
+provider:
+  name: aws
+  runtime: python3.12
+  region: ${env:AWS_REGION}
+  environment:
+    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+    AWS_REGION: ${env:AWS_REGION}
+    DYNAMODB_TABLE_USERS: ${env:DYNAMODB_TABLE_USERS}
+    STAGE: ${env::}
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:*
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${env:DYNAMODB_TABLE_USERS}"
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    fileName: requirements.txt
+
+functions:
+  create_user:
+    handler: src.create_user.lambda_handler
+    events:
+      - http:
+          path: users/register
+          method: post
+
+  login_user:
+    handler: src.login_user.lambda_handler
+    events:
+      - http:
+          path: users/login
+          method: post
+          
+  validate_token:
+    handler: src.validate_token.lambda_handler
+    events:
+      - http:
+          path: users/validate-token
+          method: post
+
+resources:
+  Resources:
+    PurchasesTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: ${env:DYNAMODB_TABLE_USERS}
+        AttributeDefinitions:
+          - AttributeName: "tenantId"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "tenantId"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+package:
+  exclude:
+    - __pycache__/**
+    - venv/**
