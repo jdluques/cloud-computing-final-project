@@ -1,0 +1,95 @@
+org: jdluques
+service: api-compras
+
+provider:
+  name: aws
+  runtime: python3.12
+  region: ${env:AWS_REGION}
+  environment:
+    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+    AWS_REGION: ${env:AWS_REGION}
+    DYNAMODB_TABLE_PURCHASES: ${env:DYNAMODB_TABLE_PURCHASES}
+    STAGE: ${env:STAGE}
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:*
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${env:DYNAMODB_TABLE_PURCHASES}"
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    fileName: requirements.txt
+
+functions:
+  list_purchases:
+    handler: src.list_purchases.lambda_handler
+    package:
+      include:
+        - src/utils/validate_list
+        - db/**
+    events:
+      - http:
+          path: purchases/{tenantId}
+          method: get
+          request:
+            parameters:
+              paths:
+                tenantId: true
+
+  register_purchase:
+    handler: src.register_purchase.lambda_handler
+    package:
+      include:
+        - src/utils/validate_register
+        - db/**
+    events:
+      - http:
+          path: purchases/{tenantId}
+          method: post
+          request:
+            parameters:
+              paths:
+                tenantId: true
+
+resources:
+  Resources:
+    PurchasesTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: ${env:DYNAMODB_TABLE_PURCHASES}
+        AttributeDefinitions:
+          - AttributeName: "tenantId"
+            AttributeType: "S"
+          - AttributeName: "purchaseId"
+            AttributeType: "S"
+          - AttributeName: "purchaseDate"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "tenantId"
+            KeyType: "HASH"
+          - AttributeName: "purchaseId"
+            KeyType: "RANGE"
+        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: "ComprasPorFechaIndex"
+            KeySchema:
+              - AttributeName: "tenantId"
+                KeyType: "HASH"
+              - AttributeName: "purchaseDate"
+                KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+
+package:
+  exclude:
+    - __pycache__/**
+    - venv/**
