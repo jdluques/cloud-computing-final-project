@@ -17,7 +17,7 @@ def lambda_handler(event, context):
 
         validate_credentials(user, password)
 
-        token = generate_token(user['tenantId'], email)
+        token = generate_token(user['tenant_id'], email)
 
         return {"statusCode": 200, "body": json.dumps({"token": token})}
     

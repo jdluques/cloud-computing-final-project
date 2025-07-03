@@ -5,22 +5,15 @@ provider:
   name: aws
   runtime: python3.12
   region: us-east-1
+  role: arn:aws:iam::633777173661:role/LabRole
   environment:
+    PYTHONPATH: src/
     JWT_SECRET: ${env:JWT_SECRET}
     TOKEN_EXPIRY: ${env:TOKEN_EXPIRY}
-  iam:
-    role:
-      statements:
-        - Effect: "Allow"
-          Action:
-            - dynamodb:*
-          Resource:
-          - "arn:aws:dynamodb:${self:provider.region}:*:table/${sls:stage}-t_users"
 
 plugins:
   - serverless-dotenv-plugin
   - serverless-python-requirements
-  - serverless-offline
 
 custom:
   pythonRequirements:
@@ -41,7 +34,7 @@ functions:
       - http:
           path: users/login
           method: post
-          
+
   validate_token:
     handler: src.validate_token.lambda_handler
     events:
@@ -54,12 +47,12 @@ resources:
     UsersTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
-        TableName: ${sls:stage}-t_users
+        TableName: ${sls:stage}-t-users
         AttributeDefinitions:
-          - AttributeName: "tenantId"
+          - AttributeName: "tenant_id"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "tenantId"
+          - AttributeName: "tenant_id"
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 

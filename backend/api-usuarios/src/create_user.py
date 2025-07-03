@@ -1,6 +1,7 @@
 import json
 import uuid
 
+
 from utils.password_handler import hash_password
 from utils.validate_register import validate_input
 from db.users_queries import register_user, get_user_by_email
@@ -18,7 +19,7 @@ def lambda_handler(event, context):
         validate_input(tenant_id, email, password, gender, address, dni)
 
         # Verificar unicidad global del email usando el GSI
-        if get_user_by_email(email):
+        if get_user_by_email(tenant_id, email):
             return {
                 "statusCode": 400,
                 'body': json.dumps({'message': 'Email already exists'}),

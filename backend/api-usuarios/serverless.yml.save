@@ -1,0 +1,62 @@
+org: elicervantess
+service: api-usuarios
+
+provider:
+  name: aws
+  runtime: python3.12
+  region: us-east-1
+  role: arn:aws:iam::633777173661:role/LabRole
+  environment:
+    PYTHONPATH: src/
+    JWT_SECRET: ${env:JWT_SECRET}
+    TOKEN_EXPIRY: ${env:TOKEN_EXPIRY}
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    fileName: requirements.txt
+
+functions:
+  create_user:
+    handler: src.create_user.lambda_handler
+    events:
+      - http:
+          path: users/register
+          method: post
+
+  login_user:
+    handler: src.login_user.lambda_handler
+    events:
+      - http:
+          path: users/login
+          method: post
+          
+  validate_token:
+    handler: src.validate_token.lambda_handler
+    events:
+      - http:
+          path: users/validate-token
+          method: post
+
+resources:
+  Resources:
+    UsersTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: ${sls:stage}-t_users
+        AttributeDefinitions:
+          - AttributeName: "tenant_id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "tenant_id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+package:
+  exclude:
+    - __pycache__/**
+    - venv/**

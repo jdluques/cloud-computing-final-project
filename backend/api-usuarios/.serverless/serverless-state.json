@@ -1,0 +1,691 @@
+{
+  "service": {
+    "service": "api-usuarios",
+    "serviceObject": {
+      "name": "api-usuarios"
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "python3.12",
+      "region": "us-east-1",
+      "role": "arn:aws:iam::633777173661:role/LabRole",
+      "environment": {
+        "PYTHONPATH": "src/",
+        "JWT_SECRET": "your-jwt-secret",
+        "TOKEN_EXPIRY": "3600"
+      },
+      "stage": "dev",
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "CreateUnderscoreuserLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/api-usuarios-dev-create_user"
+            }
+          },
+          "LoginUnderscoreuserLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/api-usuarios-dev-login_user"
+            }
+          },
+          "ValidateUnderscoretokenLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/api-usuarios-dev-validate_token"
+            }
+          },
+          "CreateUnderscoreuserLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
+                "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+              },
+              "Handler": "src.create_user.lambda_handler",
+              "Runtime": "python3.12",
+              "FunctionName": "api-usuarios-dev-create_user",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "PYTHONPATH": "src/",
+                  "JWT_SECRET": "your-jwt-secret",
+                  "TOKEN_EXPIRY": "3600"
+                }
+              },
+              "Role": "arn:aws:iam::633777173661:role/LabRole"
+            },
+            "DependsOn": [
+              "CreateUnderscoreuserLogGroup"
+            ]
+          },
+          "LoginUnderscoreuserLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
+                "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+              },
+              "Handler": "src.login_user.lambda_handler",
+              "Runtime": "python3.12",
+              "FunctionName": "api-usuarios-dev-login_user",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "PYTHONPATH": "src/",
+                  "JWT_SECRET": "your-jwt-secret",
+                  "TOKEN_EXPIRY": "3600"
+                }
+              },
+              "Role": "arn:aws:iam::633777173661:role/LabRole"
+            },
+            "DependsOn": [
+              "LoginUnderscoreuserLogGroup"
+            ]
+          },
+          "ValidateUnderscoretokenLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
+                "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+              },
+              "Handler": "src.validate_token.lambda_handler",
+              "Runtime": "python3.12",
+              "FunctionName": "api-usuarios-dev-validate_token",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "PYTHONPATH": "src/",
+                  "JWT_SECRET": "your-jwt-secret",
+                  "TOKEN_EXPIRY": "3600"
+                }
+              },
+              "Role": "arn:aws:iam::633777173661:role/LabRole"
+            },
+            "DependsOn": [
+              "ValidateUnderscoretokenLogGroup"
+            ]
+          },
+          "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "CreateUnderscoreuserLambdaFunction"
+              },
+              "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+            }
+          },
+          "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "LoginUnderscoreuserLambdaFunction"
+              },
+              "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+            }
+          },
+          "ValidateUnderscoretokenLambdaVersioncXjOdVDCiK5JdX5aBrJLKtVvQXtlG0SnwOWRwYn2Q": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "ValidateUnderscoretokenLambdaFunction"
+              },
+              "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+            }
+          },
+          "ApiGatewayRestApi": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+              "Name": "dev-api-usuarios",
+              "EndpointConfiguration": {
+                "Types": [
+                  "EDGE"
+                ]
+              },
+              "Policy": ""
+            }
+          },
+          "ApiGatewayResourceUsers": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "users",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceUsersRegister": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceUsers"
+              },
+              "PathPart": "register",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceUsersLogin": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceUsers"
+              },
+              "PathPart": "login",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceUsersValidateDashtoken": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceUsers"
+              },
+              "PathPart": "validate-token",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodUsersRegisterPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUsersRegister"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "CreateUnderscoreuserLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "CreateUnderscoreuserLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodUsersLoginPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUsersLogin"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "LoginUnderscoreuserLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "LoginUnderscoreuserLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodUsersValidateDashtokenPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUsersValidateDashtoken"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "ValidateUnderscoretokenLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "ValidateUnderscoretokenLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1751573756554": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "StageName": "dev"
+            },
+            "DependsOn": [
+              "ApiGatewayMethodUsersRegisterPost",
+              "ApiGatewayMethodUsersLoginPost",
+              "ApiGatewayMethodUsersValidateDashtokenPost"
+            ]
+          },
+          "CreateUnderscoreuserLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "CreateUnderscoreuserLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "LoginUnderscoreuserLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "LoginUnderscoreuserLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "ValidateUnderscoretokenLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "ValidateUnderscoretokenLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "UsersTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "dev-t-users",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "tenant_id",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "tenant_id",
+                  "KeyType": "HASH"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST"
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
+            "Export": {
+              "Name": "sls-api-usuarios-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "CreateUnderscoreuserLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4"
+            },
+            "Export": {
+              "Name": "sls-api-usuarios-dev-CreateUnderscoreuserLambdaFunctionQualifiedArn"
+            }
+          },
+          "LoginUnderscoreuserLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk"
+            },
+            "Export": {
+              "Name": "sls-api-usuarios-dev-LoginUnderscoreuserLambdaFunctionQualifiedArn"
+            }
+          },
+          "ValidateUnderscoretokenLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "ValidateUnderscoretokenLambdaVersioncXjOdVDCiK5JdX5aBrJLKtVvQXtlG0SnwOWRwYn2Q"
+            },
+            "Export": {
+              "Name": "sls-api-usuarios-dev-ValidateUnderscoretokenLambdaFunctionQualifiedArn"
+            }
+          },
+          "ServiceEndpoint": {
+            "Description": "URL of the service endpoint",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/dev"
+                ]
+              ]
+            },
+            "Export": {
+              "Name": "sls-api-usuarios-dev-ServiceEndpoint"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "custom": {
+      "pythonRequirements": {
+        "dockerizePip": true,
+        "fileName": "requirements.txt"
+      }
+    },
+    "plugins": [
+      "serverless-dotenv-plugin",
+      "serverless-python-requirements"
+    ],
+    "pluginsData": {},
+    "functions": {
+      "create_user": {
+        "handler": "src.create_user.lambda_handler",
+        "events": [
+          {
+            "http": {
+              "path": "users/register",
+              "method": "post",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "api-usuarios-dev-create_user",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "python3.12",
+        "vpc": {},
+        "versionLogicalId": "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4"
+      },
+      "login_user": {
+        "handler": "src.login_user.lambda_handler",
+        "events": [
+          {
+            "http": {
+              "path": "users/login",
+              "method": "post",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "api-usuarios-dev-login_user",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "python3.12",
+        "vpc": {},
+        "versionLogicalId": "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk"
+      },
+      "validate_token": {
+        "handler": "src.validate_token.lambda_handler",
+        "events": [
+          {
+            "http": {
+              "path": "users/validate-token",
+              "method": "post",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "api-usuarios-dev-validate_token",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "python3.12",
+        "vpc": {},
+        "versionLogicalId": "ValidateUnderscoretokenLambdaVersioncXjOdVDCiK5JdX5aBrJLKtVvQXtlG0SnwOWRwYn2Q"
+      }
+    },
+    "resources": {
+      "Resources": {
+        "UsersTable": {
+          "Type": "AWS::DynamoDB::Table",
+          "Properties": {
+            "TableName": "dev-t-users",
+            "AttributeDefinitions": [
+              {
+                "AttributeName": "tenant_id",
+                "AttributeType": "S"
+              }
+            ],
+            "KeySchema": [
+              {
+                "AttributeName": "tenant_id",
+                "KeyType": "HASH"
+              }
+            ],
+            "BillingMode": "PAY_PER_REQUEST"
+          }
+        }
+      },
+      "Outputs": {}
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless",
+    "initialServerlessConfig": {
+      "org": "elicervantess",
+      "service": "api-usuarios",
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "plugins": {
+        "$ref": "$[\"service\"][\"plugins\"]"
+      },
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "functions": {
+        "$ref": "$[\"service\"][\"functions\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
+      },
+      "package": {
+        "exclude": [
+          "__pycache__/**",
+          "venv/**"
+        ],
+        "artifactsS3KeyDirname": "serverless/api-usuarios/dev/code-artifacts",
+        "deploymentBucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
+        "artifact": "/home/ubuntu/cloud-project-final/backend/api-usuarios/.serverless/api-usuarios.zip",
+        "artifactDirectoryName": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z"
+      }
+    },
+    "appId": null,
+    "org": "elicervantess",
+    "orgId": null,
+    "layers": {},
+    "artifact": "/home/ubuntu/cloud-project-final/backend/api-usuarios/.serverless/api-usuarios.zip"
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z",
+    "artifact": "api-usuarios.zip"
+  }
+}
