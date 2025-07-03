@@ -3,13 +3,15 @@ import uuid
 
 from db.purchases_queries import register_purchase
 from utils.validate_register import validate_body
+from utils.authMiddleware import validate_token
 
 def lambda_handler(event, context):
     try:
         body = json.loads(event['body'])
         path_params = event.get('pathParameters')
 
-        tenant_id = path_params.get('tenantId')
+        token = validate_token(event['headers'].get('Authorization'))
+        tenant_id = token['tenantId']
         products = body.get('products')
         total_price = body.get('totalPrice')
 

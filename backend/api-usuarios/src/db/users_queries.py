@@ -33,3 +33,17 @@ def register_user(tenant_id, email, hashed_password, gender, address, dni):
         )
     except Exception as e:
         print(f"Error occurred: {e}")
+
+def get_user_by_email_global(email):
+    try:
+        response = table.query(
+            IndexName='EmailIndex',  # Nombre del GSI
+            KeyConditionExpression=boto3.dynamodb.conditions.Key('email').eq(email)
+        )
+        items = response.get('Items')
+        if items:
+            return items[0]  # El email es único globalmente
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None

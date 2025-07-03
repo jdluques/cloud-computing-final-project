@@ -3,7 +3,7 @@ import json
 from utils.password_handler import verify_password
 from utils.token_handling import generate_token
 from utils.validate_login import validate_input, validate_credentials
-from db.users_queries import get_user_by_email
+from db.users_queries import get_user_by_email_global
 
 def lambda_handler(event, context):
     try:
@@ -13,7 +13,7 @@ def lambda_handler(event, context):
 
         validate_input(email, password)
 
-        user = get_user_by_email(email)
+        user = get_user_by_email_global(email)
 
         validate_credentials(user, password)
 

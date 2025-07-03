@@ -1,6 +1,8 @@
 import re
 
-def validate_input(email, password, gender, address, dni):
+def validate_input(tenant_id, email, password, gender, address, dni):
+    if not tenant_id:
+        raise ValueError("missing country (tenantId)")
     if not email:
         raise ValueError("missing email")
     

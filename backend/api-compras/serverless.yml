@@ -1,4 +1,4 @@
-org: jdluques
+org: jirehcervantes
 service: api-compras
 
 provider:
@@ -38,12 +38,8 @@ functions:
         - db/**
     events:
       - http:
-          path: purchases/{tenantId}
+          path: purchases
           method: get
-          request:
-            parameters:
-              paths:
-                tenantId: true
 
   register_purchase:
     handler: src.register_purchase.lambda_handler
@@ -53,12 +49,8 @@ functions:
         - db/**
     events:
       - http:
-          path: purchases/{tenantId}
+          path: purchases
           method: post
-          request:
-            parameters:
-              paths:
-                tenantId: true
 
 resources:
   Resources:

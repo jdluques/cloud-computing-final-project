@@ -1,4 +1,4 @@
-org: jdluques
+org: jirehcervantes
 service: api-productos
 
 provider:
@@ -76,15 +76,15 @@ resources:
     ProductsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${env:PRODUCTS_TABLE}
+        TableName: ${env:DYNAMODB_TABLE_PRODUCTS}
         AttributeDefinitions:
           - AttributeName: tenantId
             AttributeType: S
-          - AttributeName: productCode
+          - AttributeName: productId
             AttributeType: S
         KeySchema:
           - AttributeName: tenantId
             KeyType: HASH
-          - AttributeName: productCode
+          - AttributeName: productId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST

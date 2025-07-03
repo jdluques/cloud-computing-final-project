@@ -10,11 +10,13 @@ module.exports.handler = async (event) => {
     const { name, description, price, stock, categories } = JSON.parse(event.body);
 
     const token = authMiddleware.validateToken(event.headers.Authorization);
-    if (!token || token.tenantId !== tenantId) {
+    const tenantId = token.tenantId;
+    if (!token || !tenantId) {
       return responseBuilder.unauthorized();
     }
 
     const newProduct = {
+      tenantId,
       productId: randomUUID(),
       name,
       description,
@@ -22,7 +24,7 @@ module.exports.handler = async (event) => {
       stock,
       categories,
       createdAt: new Date(),
-      updatedAt: createdAt,
+      updatedAt: new Date(),
     };
 
     await dynamoClient.put(process.env.DYNAMODB_TABLE_PRODUCTS, newProduct);

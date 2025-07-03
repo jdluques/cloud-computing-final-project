@@ -2,13 +2,13 @@ import json
 
 from db.purchases_queries import get_purchases
 from utils.validate_list import validate_body
+from utils.authMiddleware import validate_token
 
 def lambda_handler(event, context):
     try:
         body = json.loads(event['body'])
-        path_params = event.get('pathParameters')
-
-        tenant_id = path_params.get('tenantId')
+        token = validate_token(event['headers'].get('Authorization'))
+        tenant_id = token['tenantId']
         limit = body.get('limit', 10)
         last_evaluated_key = body.get('lastEvaluatedKey')
 

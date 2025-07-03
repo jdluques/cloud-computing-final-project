@@ -2,13 +2,9 @@ import re
 
 from password_handler import verify_password
 
-def validate_input(tenant_id, email, password):
-    if not tenant_id:
-        raise ValueError("missing tenant_id")
-    
+def validate_input(email, password):
     if not email:
         raise ValueError("missing email")
-    
     if not password:
         raise ValueError("missing password")
     
