@@ -1,7 +1,7 @@
 import os
 import datetime
 from datetime import timedelta
-import jwt
+import jwt  # PyJWT se importa como jwt
 
 JWT_SECRET = os.getenv('JWT_SECRET')
 TOKEN_EXPIRY = int(os.getenv('TOKEN_EXPIRY'))

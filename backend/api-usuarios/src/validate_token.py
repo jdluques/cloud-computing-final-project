@@ -17,3 +17,4 @@ def lambda_handler(event, context):
         return {"statusCode": 401, "body": json.dumps({"error": "Token has expired"})}
     except jwt.InvalidTokenError:
         return {"statusCode": 401, "body": json.dumps({"error": "Invalid token"})}
+    

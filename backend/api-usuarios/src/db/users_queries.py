@@ -1,8 +1,9 @@
 import boto3
 import datetime
+import os
 
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('Users')
+table = dynamodb.Table(f"{os.getenv('STAGE', 'dev')}-t_users")
 
 def get_user_by_email(tenant_id, email):
     try:

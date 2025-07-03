@@ -1,16 +1,13 @@
-org: jirehcervantes
+org: elicervantess
 service: api-usuarios
 
 provider:
   name: aws
   runtime: python3.12
-  region: ${env:AWS_REGION}
+  region: us-east-1
   environment:
-    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
-    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
-    AWS_REGION: ${env:AWS_REGION}
-    DYNAMODB_TABLE_USERS: ${env:DYNAMODB_TABLE_USERS}
-    STAGE: ${env::}
+    JWT_SECRET: ${env:JWT_SECRET}
+    TOKEN_EXPIRY: ${env:TOKEN_EXPIRY}
   iam:
     role:
       statements:
@@ -18,11 +15,12 @@ provider:
           Action:
             - dynamodb:*
           Resource:
-            - "arn:aws:dynamodb:${self:provider.region}:*:table/${env:DYNAMODB_TABLE_USERS}"
+          - "arn:aws:dynamodb:${self:provider.region}:*:table/${sls:stage}-t_users"
 
 plugins:
   - serverless-dotenv-plugin
   - serverless-python-requirements
+  - serverless-offline
 
 custom:
   pythonRequirements:
@@ -53,10 +51,10 @@ functions:
 
 resources:
   Resources:
-    PurchasesTable:
+    UsersTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
-        TableName: ${env:DYNAMODB_TABLE_USERS}
+        TableName: ${sls:stage}-t_users
         AttributeDefinitions:
           - AttributeName: "tenantId"
             AttributeType: "S"
