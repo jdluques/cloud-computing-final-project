@@ -40,7 +40,7 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
-                  "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+                  "S3Key": "serverless/api-usuarios/dev/1751579870333-2025-07-03T21:57:50.333Z/api-usuarios.zip"
                 },
                 "Handler": "src.create_user.lambda_handler",
                 "Runtime": "python3.12",
@@ -65,7 +65,7 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
-                  "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+                  "S3Key": "serverless/api-usuarios/dev/1751579870333-2025-07-03T21:57:50.333Z/api-usuarios.zip"
                 },
                 "Handler": "src.login_user.lambda_handler",
                 "Runtime": "python3.12",
@@ -86,27 +86,27 @@
               ]
             },
             "ValidateUnderscoretokenLambdaFunction": "<REDACTED>",
-            "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4": {
+            "CreateUnderscoreuserLambdaVersionrI2sXGhDLww7JWUnT8ePQYtYCFsCZQrvYDG1kVS4M": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "CreateUnderscoreuserLambdaFunction"
                 },
-                "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+                "CodeSha256": "hx1p7W/QnywIVmUsky4oJTpIR08Dkvl2zZN9TZlxPK4="
               }
             },
-            "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk": {
+            "LoginUnderscoreuserLambdaVersiont0AhvtlyNPCzjUTmlSkkUnGa4TQk03ryz9ndht3Y": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "LoginUnderscoreuserLambdaFunction"
                 },
-                "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+                "CodeSha256": "hx1p7W/QnywIVmUsky4oJTpIR08Dkvl2zZN9TZlxPK4="
               }
             },
-            "ValidateUnderscoretokenLambdaVersioncXjOdVDCiK5JdX5aBrJLKtVvQXtlG0SnwOWRwYn2Q": "<REDACTED>",
+            "ValidateUnderscoretokenLambdaVersionO1WNrc3L4qdqm9344XOIlNE3f2djOgnmopJ6fftr8": "<REDACTED>",
             "ApiGatewayRestApi": {
               "Type": "AWS::ApiGateway::RestApi",
               "Properties": {
@@ -252,7 +252,7 @@
               ]
             },
             "ApiGatewayMethodUsersValidateDashtokenPost": "<REDACTED>",
-            "ApiGatewayDeployment1751573756554": {
+            "ApiGatewayDeployment1751579857485": {
               "Type": "AWS::ApiGateway::Deployment",
               "Properties": {
                 "RestApiId": {
@@ -349,6 +349,10 @@
                   {
                     "AttributeName": "tenant_id",
                     "AttributeType": "S"
+                  },
+                  {
+                    "AttributeName": "email",
+                    "AttributeType": "S"
                   }
                 ],
                 "KeySchema": [
@@ -357,7 +361,21 @@
                     "KeyType": "HASH"
                   }
                 ],
-                "BillingMode": "PAY_PER_REQUEST"
+                "BillingMode": "PAY_PER_REQUEST",
+                "GlobalSecondaryIndexes": [
+                  {
+                    "IndexName": "EmailIndex",
+                    "KeySchema": [
+                      {
+                        "AttributeName": "email",
+                        "KeyType": "HASH"
+                      }
+                    ],
+                    "Projection": {
+                      "ProjectionType": "ALL"
+                    }
+                  }
+                ]
               }
             }
           },
@@ -371,7 +389,7 @@
             "CreateUnderscoreuserLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4"
+                "Ref": "CreateUnderscoreuserLambdaVersionrI2sXGhDLww7JWUnT8ePQYtYCFsCZQrvYDG1kVS4M"
               },
               "Export": {
                 "Name": "sls-api-usuarios-dev-CreateUnderscoreuserLambdaFunctionQualifiedArn"
@@ -380,7 +398,7 @@
             "LoginUnderscoreuserLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk"
+                "Ref": "LoginUnderscoreuserLambdaVersiont0AhvtlyNPCzjUTmlSkkUnGa4TQk03ryz9ndht3Y"
               },
               "Export": {
                 "Name": "sls-api-usuarios-dev-LoginUnderscoreuserLambdaFunctionQualifiedArn"
@@ -445,7 +463,7 @@
           "timeout": 6,
           "runtime": "python3.12",
           "vpc": {},
-          "versionLogicalId": "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4"
+          "versionLogicalId": "CreateUnderscoreuserLambdaVersionrI2sXGhDLww7JWUnT8ePQYtYCFsCZQrvYDG1kVS4M"
         },
         "login_user": {
           "handler": "src.login_user.lambda_handler",
@@ -464,7 +482,7 @@
           "timeout": 6,
           "runtime": "python3.12",
           "vpc": {},
-          "versionLogicalId": "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk"
+          "versionLogicalId": "LoginUnderscoreuserLambdaVersiont0AhvtlyNPCzjUTmlSkkUnGa4TQk03ryz9ndht3Y"
         },
         "validate_token": "<REDACTED>"
       },
@@ -478,6 +496,10 @@
                 {
                   "AttributeName": "tenant_id",
                   "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "email",
+                  "AttributeType": "S"
                 }
               ],
               "KeySchema": [
@@ -486,7 +508,21 @@
                   "KeyType": "HASH"
                 }
               ],
-              "BillingMode": "PAY_PER_REQUEST"
+              "BillingMode": "PAY_PER_REQUEST",
+              "GlobalSecondaryIndexes": [
+                {
+                  "IndexName": "EmailIndex",
+                  "KeySchema": [
+                    {
+                      "AttributeName": "email",
+                      "KeyType": "HASH"
+                    }
+                  ],
+                  "Projection": {
+                    "ProjectionType": "ALL"
+                  }
+                }
+              ]
             }
           }
         },
@@ -500,7 +536,7 @@
         "artifactsS3KeyDirname": "serverless/api-usuarios/dev/code-artifacts",
         "deploymentBucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
         "artifact": "/home/ubuntu/cloud-project-final/backend/api-usuarios/.serverless/api-usuarios.zip",
-        "artifactDirectoryName": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z"
+        "artifactDirectoryName": "serverless/api-usuarios/dev/1751579870333-2025-07-03T21:57:50.333Z"
       }
     },
     "provider": {
@@ -537,7 +573,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
-                "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+                "S3Key": "serverless/api-usuarios/dev/1751579870333-2025-07-03T21:57:50.333Z/api-usuarios.zip"
               },
               "Handler": "src.create_user.lambda_handler",
               "Runtime": "python3.12",
@@ -562,7 +598,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
-                "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+                "S3Key": "serverless/api-usuarios/dev/1751579870333-2025-07-03T21:57:50.333Z/api-usuarios.zip"
               },
               "Handler": "src.login_user.lambda_handler",
               "Runtime": "python3.12",
@@ -583,27 +619,27 @@
             ]
           },
           "ValidateUnderscoretokenLambdaFunction": "<REDACTED>",
-          "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4": {
+          "CreateUnderscoreuserLambdaVersionrI2sXGhDLww7JWUnT8ePQYtYCFsCZQrvYDG1kVS4M": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateUnderscoreuserLambdaFunction"
               },
-              "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+              "CodeSha256": "hx1p7W/QnywIVmUsky4oJTpIR08Dkvl2zZN9TZlxPK4="
             }
           },
-          "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk": {
+          "LoginUnderscoreuserLambdaVersiont0AhvtlyNPCzjUTmlSkkUnGa4TQk03ryz9ndht3Y": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "LoginUnderscoreuserLambdaFunction"
               },
-              "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+              "CodeSha256": "hx1p7W/QnywIVmUsky4oJTpIR08Dkvl2zZN9TZlxPK4="
             }
           },
-          "ValidateUnderscoretokenLambdaVersioncXjOdVDCiK5JdX5aBrJLKtVvQXtlG0SnwOWRwYn2Q": "<REDACTED>",
+          "ValidateUnderscoretokenLambdaVersionO1WNrc3L4qdqm9344XOIlNE3f2djOgnmopJ6fftr8": "<REDACTED>",
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
@@ -749,7 +785,7 @@
             ]
           },
           "ApiGatewayMethodUsersValidateDashtokenPost": "<REDACTED>",
-          "ApiGatewayDeployment1751573756554": {
+          "ApiGatewayDeployment1751579857485": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -846,6 +882,10 @@
                 {
                   "AttributeName": "tenant_id",
                   "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "email",
+                  "AttributeType": "S"
                 }
               ],
               "KeySchema": [
@@ -854,7 +894,21 @@
                   "KeyType": "HASH"
                 }
               ],
-              "BillingMode": "PAY_PER_REQUEST"
+              "BillingMode": "PAY_PER_REQUEST",
+              "GlobalSecondaryIndexes": [
+                {
+                  "IndexName": "EmailIndex",
+                  "KeySchema": [
+                    {
+                      "AttributeName": "email",
+                      "KeyType": "HASH"
+                    }
+                  ],
+                  "Projection": {
+                    "ProjectionType": "ALL"
+                  }
+                }
+              ]
             }
           }
         },
@@ -868,7 +922,7 @@
           "CreateUnderscoreuserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4"
+              "Ref": "CreateUnderscoreuserLambdaVersionrI2sXGhDLww7JWUnT8ePQYtYCFsCZQrvYDG1kVS4M"
             },
             "Export": {
               "Name": "sls-api-usuarios-dev-CreateUnderscoreuserLambdaFunctionQualifiedArn"
@@ -877,7 +931,7 @@
           "LoginUnderscoreuserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk"
+              "Ref": "LoginUnderscoreuserLambdaVersiont0AhvtlyNPCzjUTmlSkkUnGa4TQk03ryz9ndht3Y"
             },
             "Export": {
               "Name": "sls-api-usuarios-dev-LoginUnderscoreuserLambdaFunctionQualifiedArn"
@@ -923,43 +977,45 @@
       "serviceProvider": null,
       "instanceParameters": null
     },
-    "serviceRawFile": "org: elicervantess\nservice: api-usuarios\n\nprovider:\n  name: aws\n  runtime: python3.12\n  region: us-east-1\n  role: arn:aws:iam::633777173661:role/LabRole\n  environment:\n    PYTHONPATH: src/\n    JWT_SECRET: ${env:JWT_SECRET}\n    TOKEN_EXPIRY: ${env:TOKEN_EXPIRY}\n\nplugins:\n  - serverless-dotenv-plugin\n  - serverless-python-requirements\n\ncustom:\n  pythonRequirements:\n    dockerizePip: true\n    fileName: requirements.txt\n\nfunctions:\n  create_user:\n    handler: src.create_user.lambda_handler\n    events:\n      - http:\n          path: users/register\n          method: post\n\n  login_user:\n    handler: src.login_user.lambda_handler\n    events:\n      - http:\n          path: users/login\n          method: post\n\n  validate_token:\n    handler: src.validate_token.lambda_handler\n    events:\n      - http:\n          path: users/validate-token\n          method: post\n\nresources:\n  Resources:\n    UsersTable:\n      Type: \"AWS::DynamoDB::Table\"\n      Properties:\n        TableName: ${sls:stage}-t-users\n        AttributeDefinitions:\n          - AttributeName: \"tenant_id\"\n            AttributeType: \"S\"\n        KeySchema:\n          - AttributeName: \"tenant_id\"\n            KeyType: \"HASH\"\n        BillingMode: PAY_PER_REQUEST\n\npackage:\n  exclude:\n    - __pycache__/**\n    - venv/**\n",
+    "serviceRawFile": "org: elicervantess\nservice: api-usuarios\n\nprovider:\n  name: aws\n  runtime: python3.12\n  region: us-east-1\n  role: arn:aws:iam::633777173661:role/LabRole\n  environment:\n    PYTHONPATH: src/\n    JWT_SECRET: ${env:JWT_SECRET}\n    TOKEN_EXPIRY: ${env:TOKEN_EXPIRY}\n\nplugins:\n  - serverless-dotenv-plugin\n  - serverless-python-requirements\n\ncustom:\n  pythonRequirements:\n    dockerizePip: true\n    fileName: requirements.txt\n\nfunctions:\n  create_user:\n    handler: src.create_user.lambda_handler\n    events:\n      - http:\n          path: users/register\n          method: post\n\n  login_user:\n    handler: src.login_user.lambda_handler\n    events:\n      - http:\n          path: users/login\n          method: post\n\n  validate_token:\n    handler: src.validate_token.lambda_handler\n    events:\n      - http:\n          path: users/validate-token\n          method: post\n\nresources:\n  Resources:\n    UsersTable:\n      Type: \"AWS::DynamoDB::Table\"\n      Properties:\n        TableName: ${sls:stage}-t-users\n        AttributeDefinitions:\n          - AttributeName: \"tenant_id\"\n            AttributeType: \"S\"\n          - AttributeName: \"email\"\n            AttributeType: \"S\"\n        KeySchema:\n          - AttributeName: \"tenant_id\"\n            KeyType: \"HASH\"\n        BillingMode: PAY_PER_REQUEST\n        GlobalSecondaryIndexes:\n          - IndexName: EmailIndex\n            KeySchema:\n              - AttributeName: \"email\"\n                KeyType: \"HASH\"\n            Projection:\n              ProjectionType: ALL\n\npackage:\n  exclude:\n    - __pycache__/**\n    - venv/**\n",
     "command": [
       "deploy"
     ],
-    "options": {},
+    "options": {
+      "force": true
+    },
     "orgId": "012d43c0-04e9-4842-acde-976bbda22361",
     "orgName": "elicervantess",
     "userId": "DZWtBNtphGy2dfGHHF",
     "userName": "elicervantess",
     "serviceProviderAwsAccountId": "633777173661",
     "serviceProviderAwsCfStackName": "api-usuarios-dev",
-    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:633777173661:stack/api-usuarios-dev/2c5458e0-583d-11f0-b5fe-0afff0a67099",
-    "serviceProviderAwsCfStackCreated": "2025-07-03T18:40:20.978Z",
-    "serviceProviderAwsCfStackUpdated": "2025-07-03T20:03:53.248Z",
-    "serviceProviderAwsCfStackStatus": "UPDATE_ROLLBACK_COMPLETE",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:633777173661:stack/api-usuarios-dev/c4c57bf0-5850-11f0-8da9-0affda07b5af",
+    "serviceProviderAwsCfStackCreated": "2025-07-03T21:00:37.169Z",
+    "serviceProviderAwsCfStackUpdated": "2025-07-03T21:49:33.092Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "LoginUnderscoreuserLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:633777173661:function:api-usuarios-dev-login_user:4",
+        "OutputValue": "arn:aws:lambda:us-east-1:633777173661:function:api-usuarios-dev-login_user:11",
         "Description": "Current Lambda function version",
         "ExportName": "sls-api-usuarios-dev-LoginUnderscoreuserLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "CreateUnderscoreuserLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:633777173661:function:api-usuarios-dev-create_user:4",
+        "OutputValue": "arn:aws:lambda:us-east-1:633777173661:function:api-usuarios-dev-create_user:11",
         "Description": "Current Lambda function version",
         "ExportName": "sls-api-usuarios-dev-CreateUnderscoreuserLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "ValidateUnderscoretokenLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:633777173661:function:api-usuarios-dev-validate_token:4",
+        "OutputValue": "arn:aws:lambda:us-east-1:633777173661:function:api-usuarios-dev-validate_token:11",
         "Description": "Current Lambda function version",
         "ExportName": "sls-api-usuarios-dev-ValidateUnderscoretokenLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "ServiceEndpoint",
-        "OutputValue": "https://km6u4ziu96.execute-api.us-east-1.amazonaws.com/dev",
+        "OutputValue": "https://7l2jm03ee0.execute-api.us-east-1.amazonaws.com/dev",
         "Description": "URL of the service endpoint",
         "ExportName": "sls-api-usuarios-dev-ServiceEndpoint"
       },
@@ -991,7 +1047,7 @@
           "Properties": {
             "Code": {
               "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
-              "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+              "S3Key": "serverless/api-usuarios/dev/1751579870333-2025-07-03T21:57:50.333Z/api-usuarios.zip"
             },
             "Handler": "src.create_user.lambda_handler",
             "Runtime": "python3.12",
@@ -1016,7 +1072,7 @@
           "Properties": {
             "Code": {
               "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
-              "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+              "S3Key": "serverless/api-usuarios/dev/1751579870333-2025-07-03T21:57:50.333Z/api-usuarios.zip"
             },
             "Handler": "src.login_user.lambda_handler",
             "Runtime": "python3.12",
@@ -1037,27 +1093,27 @@
           ]
         },
         "ValidateUnderscoretokenLambdaFunction": "<REDACTED>",
-        "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4": {
+        "CreateUnderscoreuserLambdaVersionrI2sXGhDLww7JWUnT8ePQYtYCFsCZQrvYDG1kVS4M": {
           "Type": "AWS::Lambda::Version",
           "DeletionPolicy": "Retain",
           "Properties": {
             "FunctionName": {
               "Ref": "CreateUnderscoreuserLambdaFunction"
             },
-            "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+            "CodeSha256": "hx1p7W/QnywIVmUsky4oJTpIR08Dkvl2zZN9TZlxPK4="
           }
         },
-        "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk": {
+        "LoginUnderscoreuserLambdaVersiont0AhvtlyNPCzjUTmlSkkUnGa4TQk03ryz9ndht3Y": {
           "Type": "AWS::Lambda::Version",
           "DeletionPolicy": "Retain",
           "Properties": {
             "FunctionName": {
               "Ref": "LoginUnderscoreuserLambdaFunction"
             },
-            "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+            "CodeSha256": "hx1p7W/QnywIVmUsky4oJTpIR08Dkvl2zZN9TZlxPK4="
           }
         },
-        "ValidateUnderscoretokenLambdaVersioncXjOdVDCiK5JdX5aBrJLKtVvQXtlG0SnwOWRwYn2Q": "<REDACTED>",
+        "ValidateUnderscoretokenLambdaVersionO1WNrc3L4qdqm9344XOIlNE3f2djOgnmopJ6fftr8": "<REDACTED>",
         "ApiGatewayRestApi": {
           "Type": "AWS::ApiGateway::RestApi",
           "Properties": {
@@ -1203,7 +1259,7 @@
           ]
         },
         "ApiGatewayMethodUsersValidateDashtokenPost": "<REDACTED>",
-        "ApiGatewayDeployment1751573756554": {
+        "ApiGatewayDeployment1751579857485": {
           "Type": "AWS::ApiGateway::Deployment",
           "Properties": {
             "RestApiId": {
@@ -1300,6 +1356,10 @@
               {
                 "AttributeName": "tenant_id",
                 "AttributeType": "S"
+              },
+              {
+                "AttributeName": "email",
+                "AttributeType": "S"
               }
             ],
             "KeySchema": [
@@ -1308,7 +1368,21 @@
                 "KeyType": "HASH"
               }
             ],
-            "BillingMode": "PAY_PER_REQUEST"
+            "BillingMode": "PAY_PER_REQUEST",
+            "GlobalSecondaryIndexes": [
+              {
+                "IndexName": "EmailIndex",
+                "KeySchema": [
+                  {
+                    "AttributeName": "email",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                }
+              }
+            ]
           }
         }
       },
@@ -1322,7 +1396,7 @@
         "CreateUnderscoreuserLambdaFunctionQualifiedArn": {
           "Description": "Current Lambda function version",
           "Value": {
-            "Ref": "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4"
+            "Ref": "CreateUnderscoreuserLambdaVersionrI2sXGhDLww7JWUnT8ePQYtYCFsCZQrvYDG1kVS4M"
           },
           "Export": {
             "Name": "sls-api-usuarios-dev-CreateUnderscoreuserLambdaFunctionQualifiedArn"
@@ -1331,7 +1405,7 @@
         "LoginUnderscoreuserLambdaFunctionQualifiedArn": {
           "Description": "Current Lambda function version",
           "Value": {
-            "Ref": "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk"
+            "Ref": "LoginUnderscoreuserLambdaVersiont0AhvtlyNPCzjUTmlSkkUnGa4TQk03ryz9ndht3Y"
           },
           "Export": {
             "Name": "sls-api-usuarios-dev-LoginUnderscoreuserLambdaFunctionQualifiedArn"

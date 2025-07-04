@@ -1,6 +1,7 @@
 import re
 
-from password_handler import verify_password
+from utils.password_handler import verify_password
+
 
 def validate_input(email, password):
     if not email:

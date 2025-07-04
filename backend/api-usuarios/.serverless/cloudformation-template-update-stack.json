@@ -25,7 +25,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
-          "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+          "S3Key": "serverless/api-usuarios/dev/1751579870333-2025-07-03T21:57:50.333Z/api-usuarios.zip"
         },
         "Handler": "src.create_user.lambda_handler",
         "Runtime": "python3.12",
@@ -50,7 +50,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
-          "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+          "S3Key": "serverless/api-usuarios/dev/1751579870333-2025-07-03T21:57:50.333Z/api-usuarios.zip"
         },
         "Handler": "src.login_user.lambda_handler",
         "Runtime": "python3.12",
@@ -75,7 +75,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
-          "S3Key": "serverless/api-usuarios/dev/1751573784220-2025-07-03T20:16:24.220Z/api-usuarios.zip"
+          "S3Key": "serverless/api-usuarios/dev/1751579870333-2025-07-03T21:57:50.333Z/api-usuarios.zip"
         },
         "Handler": "src.validate_token.lambda_handler",
         "Runtime": "python3.12",
@@ -95,34 +95,34 @@
         "ValidateUnderscoretokenLogGroup"
       ]
     },
-    "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4": {
+    "CreateUnderscoreuserLambdaVersionrI2sXGhDLww7JWUnT8ePQYtYCFsCZQrvYDG1kVS4M": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateUnderscoreuserLambdaFunction"
         },
-        "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+        "CodeSha256": "hx1p7W/QnywIVmUsky4oJTpIR08Dkvl2zZN9TZlxPK4="
       }
     },
-    "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk": {
+    "LoginUnderscoreuserLambdaVersiont0AhvtlyNPCzjUTmlSkkUnGa4TQk03ryz9ndht3Y": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "LoginUnderscoreuserLambdaFunction"
         },
-        "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+        "CodeSha256": "hx1p7W/QnywIVmUsky4oJTpIR08Dkvl2zZN9TZlxPK4="
       }
     },
-    "ValidateUnderscoretokenLambdaVersioncXjOdVDCiK5JdX5aBrJLKtVvQXtlG0SnwOWRwYn2Q": {
+    "ValidateUnderscoretokenLambdaVersionO1WNrc3L4qdqm9344XOIlNE3f2djOgnmopJ6fftr8": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ValidateUnderscoretokenLambdaFunction"
         },
-        "CodeSha256": "j7W9BI5av9ywxHYxZuBxdcCL+U/4u0h4VY2N4Y6wcIc="
+        "CodeSha256": "hx1p7W/QnywIVmUsky4oJTpIR08Dkvl2zZN9TZlxPK4="
       }
     },
     "ApiGatewayRestApi": {
@@ -326,7 +326,7 @@
         "ValidateUnderscoretokenLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1751573756554": {
+    "ApiGatewayDeployment1751579857485": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -459,6 +459,10 @@
           {
             "AttributeName": "tenant_id",
             "AttributeType": "S"
+          },
+          {
+            "AttributeName": "email",
+            "AttributeType": "S"
           }
         ],
         "KeySchema": [
@@ -467,7 +471,21 @@
             "KeyType": "HASH"
           }
         ],
-        "BillingMode": "PAY_PER_REQUEST"
+        "BillingMode": "PAY_PER_REQUEST",
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "EmailIndex",
+            "KeySchema": [
+              {
+                "AttributeName": "email",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ]
       }
     }
   },
@@ -481,7 +499,7 @@
     "CreateUnderscoreuserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateUnderscoreuserLambdaVersionquPwCzXUIZ9LnXOoBJkMZCgrrbYy4KdUUaDNdmr4"
+        "Ref": "CreateUnderscoreuserLambdaVersionrI2sXGhDLww7JWUnT8ePQYtYCFsCZQrvYDG1kVS4M"
       },
       "Export": {
         "Name": "sls-api-usuarios-dev-CreateUnderscoreuserLambdaFunctionQualifiedArn"
@@ -490,7 +508,7 @@
     "LoginUnderscoreuserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "LoginUnderscoreuserLambdaVersionotCUJXpBR0xyM2XPssuF1TnOuWzkeswYA7JfQLk"
+        "Ref": "LoginUnderscoreuserLambdaVersiont0AhvtlyNPCzjUTmlSkkUnGa4TQk03ryz9ndht3Y"
       },
       "Export": {
         "Name": "sls-api-usuarios-dev-LoginUnderscoreuserLambdaFunctionQualifiedArn"
@@ -499,7 +517,7 @@
     "ValidateUnderscoretokenLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ValidateUnderscoretokenLambdaVersioncXjOdVDCiK5JdX5aBrJLKtVvQXtlG0SnwOWRwYn2Q"
+        "Ref": "ValidateUnderscoretokenLambdaVersionO1WNrc3L4qdqm9344XOIlNE3f2djOgnmopJ6fftr8"
       },
       "Export": {
         "Name": "sls-api-usuarios-dev-ValidateUnderscoretokenLambdaFunctionQualifiedArn"
