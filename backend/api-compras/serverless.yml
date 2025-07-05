@@ -1,24 +1,15 @@
-org: jdluques
+org: elicervantess
 service: api-compras
 
 provider:
   name: aws
   runtime: python3.12
-  region: ${env:AWS_REGION}
+  region: us-east-1
+  role: arn:aws:iam::633777173661:role/LabRole
   environment:
-    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
-    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
-    AWS_REGION: ${env:AWS_REGION}
-    DYNAMODB_TABLE_PURCHASES: ${env:DYNAMODB_TABLE_PURCHASES}
-    STAGE: ${env:STAGE}
-  iam:
-    role:
-      statements:
-        - Effect: "Allow"
-          Action:
-            - dynamodb:*
-          Resource:
-            - "arn:aws:dynamodb:${self:provider.region}:*:table/${env:DYNAMODB_TABLE_PURCHASES}"
+    PYTHONPATH: src/
+    JWT_SECRET: ${env:JWT_SECRET}
+    DYNAMODB_TABLE_PURCHASES: ${sls:stage}-t-purchases
 
 plugins:
   - serverless-dotenv-plugin
@@ -32,57 +23,41 @@ custom:
 functions:
   list_purchases:
     handler: src.list_purchases.lambda_handler
-    package:
-      include:
-        - src/utils/validate_list
-        - db/**
     events:
       - http:
-          path: purchases/{tenantId}
+          path: purchases
           method: get
-          request:
-            parameters:
-              paths:
-                tenantId: true
 
   register_purchase:
     handler: src.register_purchase.lambda_handler
-    package:
-      include:
-        - src/utils/validate_register
-        - db/**
     events:
       - http:
-          path: purchases/{tenantId}
+          path: purchases
           method: post
-          request:
-            parameters:
-              paths:
-                tenantId: true
 
 resources:
   Resources:
     PurchasesTable:
-      Type: "AWS::DynamoDB::Table"
+      Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${env:DYNAMODB_TABLE_PURCHASES}
+        TableName: ${self:provider.stage}-t-purchases
         AttributeDefinitions:
-          - AttributeName: "tenantId"
+          - AttributeName: "tenant_id"
             AttributeType: "S"
-          - AttributeName: "purchaseId"
+          - AttributeName: "purchase_id"
             AttributeType: "S"
           - AttributeName: "purchaseDate"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "tenantId"
+          - AttributeName: "tenant_id"
             KeyType: "HASH"
-          - AttributeName: "purchaseId"
+          - AttributeName: "purchase_id"
             KeyType: "RANGE"
         BillingMode: PAY_PER_REQUEST
         GlobalSecondaryIndexes:
           - IndexName: "ComprasPorFechaIndex"
             KeySchema:
-              - AttributeName: "tenantId"
+              - AttributeName: "tenant_id"
                 KeyType: "HASH"
               - AttributeName: "purchaseDate"
                 KeyType: "RANGE"

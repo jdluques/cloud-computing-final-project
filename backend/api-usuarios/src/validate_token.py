@@ -1,7 +1,6 @@
 import json
 import jwt
 from datetime import datetime
-
 from utils.token_handling import decode_token
 
 def lambda_handler(event, context):
@@ -13,10 +12,8 @@ def lambda_handler(event, context):
 
     try:
         decoded_token = decode_token(token)
-
-        # Convertir `exp` a formato legible UTC
         exp_timestamp = decoded_token.get("exp")
-        exp_datetime = datetime.utcfromtimestamp(exp_timestamp).isoformat() + "Z"  # "2025-10-03T22:51:31Z"
+        exp_datetime = datetime.utcfromtimestamp(exp_timestamp).isoformat() + "Z"
 
         return {
             "statusCode": 200,
@@ -25,7 +22,8 @@ def lambda_handler(event, context):
                 "data": {
                     "tenantId": decoded_token.get("tenantId"),
                     "email": decoded_token.get("email"),
-                    "exp": exp_datetime  # Fecha legible
+                    "userId": decoded_token.get("user_id"),
+                    "exp": exp_datetime
                 }
             })
         }

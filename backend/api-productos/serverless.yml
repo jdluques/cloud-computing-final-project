@@ -1,16 +1,14 @@
-org: jdluques
-service: api-productos
+org: elicervantess
+service: api-compras
 
 provider:
   name: aws
-  runtime: nodejs22.x
-  region: ${env:AWS_REGION}
+  runtime: python3.12
+  role: arn:aws:iam::633777173661:role/LabRole
+  region: us-east-1
   environment:
-    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
-    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
-    AWS_REGION: ${env:AWS_REGION}
-    DYNAMODB_TABLE_PRODUCTS: ${env:DYNAMODB_TABLE_PRODUCTS}
-    JWT_SECRET: your-secret-key
+    DYNAMODB_TABLE_PURCHASES: ${sls:stage}-t-purchases
+    JWT_SECRET: ${env:JWT_SECRET}
   iam:
     role:
       statements:
@@ -18,73 +16,63 @@ provider:
           Action:
             - dynamodb:*
           Resource:
-            - "arn:aws:dynamodb:${self:provider.region}:*:table/${env:DYNAMODB_TABLE_PURCHASES}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${sls:stage}-t-purchases"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${sls:stage}-t-purchases/index/*"
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    fileName: requirements.txt
 
 functions:
-  createProduct:
-    handler: src/createProduct.handler
+  registerPurchase:
+    handler: src/register_purchase.lambda_handler
     events:
       - http:
-          path: products
+          path: purchases
           method: post
 
-  listProducts:
-    handler: src/listProducts.handler
+  listPurchases:
+    handler: src/list_purchases.lambda_handler
     events:
       - http:
-          path: products
+          path: purchases
           method: get
-
-  getProduct:
-    handler: src/getProduct.handler
-    events:
-      - http:
-          path: products/{productId}
-          method: get
-          request:
-            parameters:
-              paths:
-                productId: true
-
-  updateProduct:
-    handler: src/updateProduct.handler
-    events:
-      - http:
-          path: products/{productId}
-          method: put
-          request:
-            parameters:
-              paths:
-                productId: true
-
-  deleteProduct:
-    handler: src/deleteProduct.handler
-    events:
-      - http:
-          path: products/{productId}
-          method: delete
-          request:
-            parameters:
-              paths:
-                productId: true
 
 resources:
   Resources:
-    ProductsTable:
+    PurchasesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${env:PRODUCTS_TABLE}
+        TableName: ${sls:stage}-t-purchases
         AttributeDefinitions:
-          - AttributeName: tenantId
+          - AttributeName: tenant_id
             AttributeType: S
-          - AttributeName: productCode
+          - AttributeName: purchase_id
+            AttributeType: S
+          - AttributeName: purchaseDate
             AttributeType: S
         KeySchema:
-          - AttributeName: tenantId
+          - AttributeName: tenant_id
             KeyType: HASH
-          - AttributeName: productCode
+          - AttributeName: purchase_id
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: PurchasesByDateIndex
+            KeySchema:
+              - AttributeName: tenant_id
+                KeyType: HASH
+              - AttributeName: purchaseDate
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
+package:
+  exclude:
+    - __pycache__/**
+    - venv/**
