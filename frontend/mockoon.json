@@ -6,7 +6,46 @@
   "latency": 0,
   "port": 8081,
   "hostname": "",
-  "folders": [],
+  "folders": [
+    {
+      "uuid": "7d765580-ca07-43f6-9159-08cd1911b113",
+      "name": "contents",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "a5ad4670-99f2-411e-aea5-027af3a902d6"
+        },
+        {
+          "type": "route",
+          "uuid": "a9eac680-7ecf-473c-9da5-003c1aa95cc2"
+        },
+        {
+          "type": "route",
+          "uuid": "104e2193-0fa2-4658-b6ab-d679bdc4b700"
+        },
+        {
+          "type": "route",
+          "uuid": "c268d178-46c8-4bdb-aeda-926c3a1f753b"
+        },
+        {
+          "type": "route",
+          "uuid": "7fc3c223-6d52-4e71-8269-186fc410add3"
+        },
+        {
+          "type": "route",
+          "uuid": "6b3b035f-f8f0-47f9-afc5-609d86b47c69"
+        },
+        {
+          "type": "route",
+          "uuid": "6b271cb8-247b-4721-97c7-a472c49b3b3e"
+        },
+        {
+          "type": "route",
+          "uuid": "2ba2097b-4fed-4087-8022-99d36202946d"
+        }
+      ]
+    }
+  ],
   "routes": [
     {
       "uuid": "a5ad4670-99f2-411e-aea5-027af3a902d6",
@@ -38,12 +77,229 @@
       "responseMode": null,
       "streamingMode": null,
       "streamingInterval": 0
+    },
+    {
+      "uuid": "a9eac680-7ecf-473c-9da5-003c1aa95cc2",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "contents/novedades",
+      "responses": [
+        {
+          "uuid": "2394e097-b1d6-4bbd-b043-98017d8a368b",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xtv4",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "104e2193-0fa2-4658-b6ab-d679bdc4b700",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "contents/best-sellers",
+      "responses": [
+        {
+          "uuid": "6d26ff1e-d23e-478b-b825-a1057dd2853b",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xtv4",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "c268d178-46c8-4bdb-aeda-926c3a1f753b",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "contents/bienestar-y-salud",
+      "responses": [
+        {
+          "uuid": "b244f250-4936-4376-8170-7227969425a6",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xtv4",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "7fc3c223-6d52-4e71-8269-186fc410add3",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "contents/exitos-empresariales",
+      "responses": [
+        {
+          "uuid": "15556733-ea2a-45a9-aada-7f6814c8a2c1",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xtv4",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "6b3b035f-f8f0-47f9-afc5-609d86b47c69",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "contents/universo-juvenil",
+      "responses": [
+        {
+          "uuid": "c61fdded-893e-4f22-9a0e-955b1a1764f8",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xtv4",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "6b271cb8-247b-4721-97c7-a472c49b3b3e",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "contents/comics-y-mangas",
+      "responses": [
+        {
+          "uuid": "468e160b-1002-4306-8e90-230c80207d90",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xtv4",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "2ba2097b-4fed-4087-8022-99d36202946d",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "contents/libros-infantiles",
+      "responses": [
+        {
+          "uuid": "c3ace31c-537b-4255-bb67-fe2be344fc75",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xtv4",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "rootChildren": [
     {
-      "type": "route",
-      "uuid": "a5ad4670-99f2-411e-aea5-027af3a902d6"
+      "type": "folder",
+      "uuid": "7d765580-ca07-43f6-9159-08cd1911b113"
     }
   ],
   "proxyMode": false,
@@ -89,6 +345,14 @@
       "value": ""
     }
   ],
-  "data": [],
+  "data": [
+    {
+      "uuid": "24e0bc40-c99c-46f5-a1cc-5f29c0063a19",
+      "id": "xtv4",
+      "name": "HomePageCarousel",
+      "documentation": "",
+      "value": "[\n  {{#repeat 20}}\n  {\n    \"imageUrl\": \"{{faker 'image.urlLoremFlickr' width=178 height=255}}\",\n    \"author\": \"{{faker 'book.author'}}\",\n    \"title\": \"{{faker 'book.title'}}\",\n    \"price\": {{faker 'number.float' min=1 max=500 fractionDigits=2}}\n  }\n  {{/repeat}}\n]"
+    }
+  ],
   "callbacks": []
 }

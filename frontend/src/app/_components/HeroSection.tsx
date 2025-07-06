@@ -12,23 +12,20 @@ export default async function HeroSection() {
   const heroImages = await getHeroImages();
 
   return (
-    <Carousel>
-      <CarouselContent>
-        {heroImages.map((heroImage, index) => (
-          <CarouselItem key={index}>
-            <Image
-              src={heroImage.url}
-              alt={heroImage.alt}
-              width={1521}
-              height={428}
-            />
-          </CarouselItem>
-        ))}
-      </CarouselContent>
+    <div className="relative w-full">
+      <Carousel className="w-full">
+        <CarouselContent className="w-full">
+          {heroImages.map((heroImage, index) => (
+            <CarouselItem key={index} className="relative h-[428px] w-full">
+              <Image src={heroImage.url} alt={heroImage.alt} fill />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
 
-      <CarouselPrevious />
+        <CarouselPrevious className="absolute top-1/2 left-4 -translate-y-1/2" />
 
-      <CarouselNext />
-    </Carousel>
+        <CarouselNext className="absolute top-1/2 right-4 -translate-y-1/2" />
+      </Carousel>
+    </div>
   );
 }

@@ -5,3 +5,10 @@ export const HeroImageSchema = z.object({
   href: z.string().url(),
   alt: z.string(),
 });
+
+export const CarouselItemSchema = z.object({
+  author: z.string(),
+  title: z.string(),
+  price: z.number(),
+  imageUrl: z.string().url(),
+});
