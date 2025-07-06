@@ -1,24 +1,15 @@
-org: jdluques
+org: elicervantess
 service: api-usuarios
 
 provider:
   name: aws
   runtime: python3.12
-  region: ${env:AWS_REGION}
+  region: us-east-1
+  role: arn:aws:iam::633777173661:role/LabRole
   environment:
-    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
-    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
-    AWS_REGION: ${env:AWS_REGION}
-    DYNAMODB_TABLE_USERS: ${env:DYNAMODB_TABLE_USERS}
-    STAGE: ${env::}
-  iam:
-    role:
-      statements:
-        - Effect: "Allow"
-          Action:
-            - dynamodb:*
-          Resource:
-            - "arn:aws:dynamodb:${self:provider.region}:*:table/${env:DYNAMODB_TABLE_USERS}"
+    PYTHONPATH: src/
+    JWT_SECRET: ${env:JWT_SECRET}
+    TOKEN_EXPIRY: ${env:TOKEN_EXPIRY}
 
 plugins:
   - serverless-dotenv-plugin
@@ -43,7 +34,7 @@ functions:
       - http:
           path: users/login
           method: post
-          
+
   validate_token:
     handler: src.validate_token.lambda_handler
     events:
@@ -53,17 +44,26 @@ functions:
 
 resources:
   Resources:
-    PurchasesTable:
+    UsersTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
-        TableName: ${env:DYNAMODB_TABLE_USERS}
+        TableName: ${sls:stage}-t-users
         AttributeDefinitions:
-          - AttributeName: "tenantId"
+          - AttributeName: "tenant_id"
+            AttributeType: "S"
+          - AttributeName: "email"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "tenantId"
+          - AttributeName: "tenant_id"
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: EmailIndex
+            KeySchema:
+              - AttributeName: "email"
+                KeyType: "HASH"
+            Projection:
+              ProjectionType: ALL
 
 package:
   exclude:
