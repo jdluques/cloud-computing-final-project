@@ -7,6 +7,12 @@ module.exports = {
     }
 
     const token = authHeader.replace('Bearer ', '');
-    return jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!decoded.tenantId) {
+      throw new Error('Invalid token payload: missing tenantId');
+    }
+
+    return decoded;
   },
 };
