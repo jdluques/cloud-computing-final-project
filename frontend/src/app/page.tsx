@@ -9,7 +9,7 @@ import BookCategorySection from "./_components/BookCategorySection";
 import Footer from "./_components/Footer";
 import HeroSection from "./_components/HeroSection";
 
-export default function Home() {
+export default function Page() {
   return (
     <main className="flex w-full flex-col items-center justify-center gap-10">
       <HeroSection />
