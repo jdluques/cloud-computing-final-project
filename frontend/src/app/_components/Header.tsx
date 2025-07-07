@@ -1,26 +1,15 @@
-import { Book, LucideIcon, Pin, ShoppingCart, User } from "lucide-react";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { ArrowRight, Book } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
-
-const navigationSections: { title: string; href?: string; Icon: LucideIcon }[] =
-  [
-    { title: "Blog", href: "/blog", Icon: Book },
-    { title: "Tiendas", href: "/shops", Icon: Pin },
-    { title: "Regístrate", Icon: User },
-    { title: "Carrito", href: "/cart", Icon: ShoppingCart },
-  ];
-
-const bookCategories: { title: string }[] = [
-  { title: "MANGA Y COMICS" },
-  { title: "NO FICCIÓN" },
-  { title: "LIBROS INFANTILES" },
-  { title: "LIBROS JUVENIALES" },
-  { title: "FICCIÓN" },
-  { title: "BIENESTAR Y SALUD" },
-  { title: "ACTUALIDAD Y EMPRESA" },
-];
+import { bookCategories } from "../_content/bookCategories";
+import { navigationSections } from "../_content/navigationSections";
 
 export default function Header() {
   return (
@@ -58,12 +47,40 @@ export default function Header() {
         </section>
       </header>
 
-      <footer className="bg-primary">
-        <section className="flex flex-row items-center justify-center gap-2">
-          {bookCategories.map((category, index) => (
-            <Button key={index}>{category.title}</Button>
-          ))}
-        </section>
+      <footer className="bg-primary flex w-full flex-row items-center justify-center gap-2">
+        {bookCategories.map((category, index) => (
+          <HoverCard key={index}>
+            <HoverCardTrigger>
+              <Button asChild>
+                <Link href={""}>{category.title.toUpperCase()}</Link>
+              </Button>
+            </HoverCardTrigger>
+
+            <HoverCardContent className="flex w-full flex-col gap-10 p-10">
+              <section className="flex flex-row items-center gap-2">
+                <Book />
+                <p className="text-xl font-bold underline">{category.title}</p>
+                <ArrowRight />
+              </section>
+
+              <section className="flex flex-row gap-10 text-sm">
+                {category.subcategories.map((subcategory, subIndex) => (
+                  <div key={subIndex} className="flex flex-col gap-2">
+                    <p className="font-bold underline">
+                      {subcategory.title.toUpperCase()}
+                    </p>
+
+                    {subcategory.items.map((item, itemIndex) => (
+                      <Link key={itemIndex} href={""}>
+                        <p>{item.title}</p>
+                      </Link>
+                    ))}
+                  </div>
+                ))}
+              </section>
+            </HoverCardContent>
+          </HoverCard>
+        ))}
       </footer>
     </nav>
   );
