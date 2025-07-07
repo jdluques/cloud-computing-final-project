@@ -7,7 +7,7 @@ from db.users_queries import register_user, get_user_by_email
 def lambda_handler(event, context):
     try:
         body = json.loads(event['body'])
-        tenant_id = body.get('country')
+        tenant_id = body.get('department')
         email = body.get('email')
         password = body.get('password')
         gender = body.get('gender')
