@@ -22,7 +22,7 @@ const bookCategories: { title: string }[] = [
   { title: "ACTUALIDAD Y EMPRESA" },
 ];
 
-export default function Navbar() {
+export default function Header() {
   return (
     <nav className="bg-accent flex w-full flex-col">
       <header className="flex flex-row items-center justify-between px-3 py-3">
