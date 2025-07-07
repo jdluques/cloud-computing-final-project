@@ -1,78 +1,83 @@
 org: elicervantess
-service: api-compras
+service: api-productos
 
 provider:
   name: aws
-  runtime: python3.12
-  role: arn:aws:iam::633777173661:role/LabRole
+  runtime: nodejs18.x
   region: us-east-1
+  role: arn:aws:iam::633777173661:role/LabRole
   environment:
-    DYNAMODB_TABLE_PURCHASES: ${sls:stage}-t-purchases
+    DYNAMODB_TABLE_PRODUCTS: ${sls:stage}-t-products
     JWT_SECRET: ${env:JWT_SECRET}
-  iam:
-    role:
-      statements:
-        - Effect: "Allow"
-          Action:
-            - dynamodb:*
-          Resource:
-            - "arn:aws:dynamodb:${self:provider.region}:*:table/${sls:stage}-t-purchases"
-            - "arn:aws:dynamodb:${self:provider.region}:*:table/${sls:stage}-t-purchases/index/*"
 
 plugins:
   - serverless-dotenv-plugin
-  - serverless-python-requirements
-
-custom:
-  pythonRequirements:
-    dockerizePip: true
-    fileName: requirements.txt
 
 functions:
-  registerPurchase:
-    handler: src/register_purchase.lambda_handler
+  createProduct:
+    handler: src/createProduct.handler
     events:
       - http:
-          path: purchases
+          path: productos/create
           method: post
 
-  listPurchases:
-    handler: src/list_purchases.lambda_handler
+  getProduct:
+    handler: src/getProduct.handler
     events:
       - http:
-          path: purchases
+          path: productos/get/{productId}
           method: get
+
+  listProducts:
+    handler: src/listProducts.handler
+    events:
+      - http:
+          path: productos/list
+          method: get
+
+  updateProduct:
+    handler: src/updateProduct.handler
+    events:
+      - http:
+          path: productos/update/{productId}
+          method: put
+
+  deleteProduct:
+    handler: src/deleteProduct.handler
+    events:
+      - http:
+          path: productos/delete/{productId}
+          method: delete
 
 resources:
   Resources:
-    PurchasesTable:
+    ProductsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${sls:stage}-t-purchases
+        TableName: ${sls:stage}-t-products
         AttributeDefinitions:
           - AttributeName: tenant_id
             AttributeType: S
-          - AttributeName: purchase_id
+          - AttributeName: productId
             AttributeType: S
-          - AttributeName: purchaseDate
+          - AttributeName: globalProductId   
             AttributeType: S
         KeySchema:
           - AttributeName: tenant_id
             KeyType: HASH
-          - AttributeName: purchase_id
+          - AttributeName: productId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         GlobalSecondaryIndexes:
-          - IndexName: PurchasesByDateIndex
+          - IndexName: GlobalProductIndex  
             KeySchema:
-              - AttributeName: tenant_id
+              - AttributeName: globalProductId
                 KeyType: HASH
-              - AttributeName: purchaseDate
-                KeyType: RANGE
             Projection:
               ProjectionType: ALL
 
 package:
   exclude:
     - __pycache__/**
+    - tests/**
     - venv/**

@@ -12,9 +12,11 @@ def lambda_handler(event, context):
         password = body.get('password')
         gender = body.get('gender')
         address = body.get('address')
-        dni = body.get('dni')
+        document_type = body.get('document_type')
+        document_number = body.get('document_number')
 
-        validate_input(tenant_id, email, password, gender, address, dni)
+        # Validar entrada completa
+        validate_input(tenant_id, email, password, gender, address, document_type, document_number)
 
         # Generar user_id como UUID
         user_id = str(uuid.uuid4())
@@ -27,7 +29,18 @@ def lambda_handler(event, context):
             }
 
         hashed_password = hash_password(password)
-        register_user(tenant_id, user_id, email, hashed_password, gender, address, dni)
+
+        # Registrar nuevo usuario
+        register_user(
+            tenant_id=tenant_id,
+            user_id=user_id,
+            email=email,
+            hashed_password=hashed_password,
+            gender=gender,
+            address=address,
+            document_type=document_type,
+            document_number=document_number
+        )
 
         return {
             "statusCode": 200,
@@ -37,6 +50,7 @@ def lambda_handler(event, context):
                 'userId': user_id
             }),
         }
+
     except Exception as e:
         return {
             'statusCode': 500,
