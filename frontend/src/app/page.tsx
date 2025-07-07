@@ -6,7 +6,6 @@ import { getLibrosInfantiles } from "@/client/content/getLibrosInfantiles";
 import { getNovedades } from "@/client/content/getNovedades";
 import { getUniversoJuvenil } from "@/client/content/getUniversoJuvenil";
 import BookCategorySection from "./_components/BookCategorySection";
-import Footer from "./_components/Footer";
 import HeroSection from "./_components/HeroSection";
 
 export default function Page() {
@@ -48,8 +47,6 @@ export default function Page() {
         category="🧸LIBROS INFANTILES PARA TODOS"
         fetch={getLibrosInfantiles}
       />
-
-      <Footer />
     </main>
   );
 }
