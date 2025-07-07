@@ -40,10 +40,7 @@ def get_user_by_email_global(email):
         print(f"An error occurred: {e}")
         return None
 
-def register_user(tenant_id, user_id, email, hashed_password, gender, address, dni):
-    """
-    Registra un nuevo usuario con user_id como sort key.
-    """
+def register_user(tenant_id, user_id, email, hashed_password, gender, address, document_type, document_number):
     try:
         table.put_item(
             Item={
@@ -53,7 +50,8 @@ def register_user(tenant_id, user_id, email, hashed_password, gender, address, d
                 'password': hashed_password,
                 'gender': gender,
                 'address': address,
-                'dni': dni,
+                'document_type': document_type,
+                'document_number': document_number,
                 'createdAt': datetime.datetime.utcnow().isoformat(),
                 'updatedAt': datetime.datetime.utcnow().isoformat()
             },
@@ -61,3 +59,4 @@ def register_user(tenant_id, user_id, email, hashed_password, gender, address, d
         )
     except Exception as e:
         print(f"Error occurred: {e}")
+

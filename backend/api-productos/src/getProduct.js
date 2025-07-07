@@ -14,15 +14,16 @@ module.exports.handler = async (event) => {
     let result;
 
     if (isGlobal) {
-      // Búsqueda global: usar scan para encontrar el productId sin importar el tenant
+      // Búsqueda global usando GSI GlobalProductIndex (más eficiente que scan)
       const params = {
         TableName: process.env.DYNAMODB_TABLE_PRODUCTS,
-        FilterExpression: "productId = :productId",
+        IndexName: "GlobalProductIndex",
+        KeyConditionExpression: "globalProductId = :gpid",
         ExpressionAttributeValues: {
-          ":productId": productId
+          ":gpid": `${tenant_id}#${productId}`
         }
       };
-      result = await dynamoClient.scan(params);
+      result = await dynamoClient.query(params);
 
       if (!result.Items || result.Items.length === 0) {
         return responseBuilder.error('Product not found', 404);

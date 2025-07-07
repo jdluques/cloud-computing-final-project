@@ -1,18 +1,23 @@
 const dynamoClient = require('./db/dynamoClient');
 const responseBuilder = require('./utils/responseBuilder');
 const authMiddleware = require('./utils/authMiddleware');
+const { productCreateSchema } = require('./utils/productSchema'); // 👈 usar schema completo
 
 module.exports.handler = async (event) => {
   try {
     const { productId } = event.pathParameters;
-    const updates = JSON.parse(event.body);
+    const payload = JSON.parse(event.body);
 
-    // Validar token y extraer tenant_id + email del usuario logueado
+    // Validar que se envíen todos los campos requeridos
+    const { error, value } = productCreateSchema.validate(payload);
+    if (error) {
+      return responseBuilder.error(`Validation error: ${error.message}`, 400);
+    }
+
     const decodedToken = authMiddleware.validateToken(event.headers.Authorization);
     const tenant_id = decodedToken.tenantId;
     const userEmail = decodedToken.email;
 
-    // Buscar el producto asegurando que pertenece al tenant
     const result = await dynamoClient.get(process.env.DYNAMODB_TABLE_PRODUCTS, {
       tenant_id: tenant_id,
       productId: productId
@@ -22,16 +27,14 @@ module.exports.handler = async (event) => {
       return responseBuilder.error('Product not found', 404);
     }
 
-    // Verificar que el producto fue creado por este usuario
     if (result.Item.createdBy !== userEmail) {
       return responseBuilder.unauthorized();
     }
 
-    // Merge con los nuevos datos y actualizar timestamp
     const timestamp = new Date().toISOString();
     const updatedProduct = {
       ...result.Item,
-      ...updates,
+      ...value,
       updatedAt: timestamp
     };
 
