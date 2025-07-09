@@ -3,11 +3,12 @@ import uuid
 from utils.password_handler import hash_password
 from utils.validate_register import validate_input
 from db.users_queries import register_user, get_user_by_email
+from utils.iso_countries import VALID_COUNTRY_CODES  # Asegúrate de que esto esté en uso
 
 def lambda_handler(event, context):
     try:
         body = json.loads(event['body'])
-        tenant_id = body.get('department')
+        tenant_id = body.get('country')  # <-- Cambiado a 'country'
         email = body.get('email')
         password = body.get('password')
         gender = body.get('gender')
@@ -15,13 +16,21 @@ def lambda_handler(event, context):
         document_type = body.get('document_type')
         document_number = body.get('document_number')
 
-        # Validar entrada completa
-        validate_input(tenant_id, email, password, gender, address, document_type, document_number)
+        # Validación completa de datos
+        validate_input(
+            tenant_id,
+            email,
+            password,
+            gender,
+            address,
+            document_type,
+            document_number
+        )
 
-        # Generar user_id como UUID
+        # Generar user_id único
         user_id = str(uuid.uuid4())
 
-        # Verificar unicidad global por email con GSI
+        # Verificar si ya existe ese email en ese país (tenant)
         if get_user_by_email(tenant_id, email):
             return {
                 "statusCode": 400,
@@ -30,7 +39,7 @@ def lambda_handler(event, context):
 
         hashed_password = hash_password(password)
 
-        # Registrar nuevo usuario
+        # Registrar el nuevo usuario
         register_user(
             tenant_id=tenant_id,
             user_id=user_id,
