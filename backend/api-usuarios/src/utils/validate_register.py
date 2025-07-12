@@ -1,11 +1,11 @@
 import re
-from utils.iso_departaments import VALID_DEPARTAMENTS
+from utils.iso_countries import VALID_COUNTRY_CODES  # ahora importamos países
 
 def validate_input(tenant_id, email, password, gender, address, document_type, document_number):
     if not tenant_id:
-        raise ValueError("missing department (tenantId)")
-    if tenant_id not in VALID_DEPARTAMENTS:
-        raise ValueError(f"Invalid department. Department not found")
+        raise ValueError("missing country (tenantId)")
+    if tenant_id not in VALID_COUNTRY_CODES:
+        raise ValueError("invalid country. Must be a valid ISO alpha-3 code for a Spanish-speaking country")
 
     if not email:
         raise ValueError("missing email")
