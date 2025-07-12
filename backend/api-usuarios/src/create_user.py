@@ -2,13 +2,13 @@ import json
 import uuid
 from utils.password_handler import hash_password
 from utils.validate_register import validate_input
-from db.users_queries import register_user, get_user_by_email
-from utils.iso_countries import VALID_COUNTRY_CODES  # Asegúrate de que esto esté en uso
+from db.users_queries import register_user, get_user_by_email_global
+from utils.iso_countries import VALID_COUNTRY_CODES 
 
 def lambda_handler(event, context):
     try:
         body = json.loads(event['body'])
-        tenant_id = body.get('country')  # <-- Cambiado a 'country'
+        tenant_id = body.get('country')  
         email = body.get('email')
         password = body.get('password')
         gender = body.get('gender')
@@ -30,8 +30,7 @@ def lambda_handler(event, context):
         # Generar user_id único
         user_id = str(uuid.uuid4())
 
-        # Verificar si ya existe ese email en ese país (tenant)
-        if get_user_by_email(tenant_id, email):
+        if get_user_by_email_global(email):
             return {
                 "statusCode": 400,
                 'body': json.dumps({'message': 'Email already exists'}),
