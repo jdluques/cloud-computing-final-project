@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  title: API Usuarios
+  version: 1.0.0
+  description: API para registrar usuarios, login y validar token JWT.
+
+paths:
+  /users/register:
+    post:
+      summary: Registrar nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                country: { type: string }
+                email: { type: string }
+                password: { type: string }
+                gender: { type: string }
+                address: { type: string }
+                document_type: { type: string }
+                document_number: { type: string }
+      responses:
+        '200':
+          description: Usuario creado con éxito
+
+  /users/login:
+    post:
+      summary: Iniciar sesión
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200':
+          description: Devuelve token JWT
+
+  /users/validate-token:
+    post:
+      summary: Validar token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token: { type: string }
+      responses:
+        '200':
+          description: Token válido
