@@ -1,0 +1,422 @@
+{
+  "C:\\Users\\User\\OneDrive\\Desktop\\UTEC\\2025 - 1\\Cloud Computing\\cloud-computing-final-project\\backend\\api-compras\\serverless.yml": {
+    "versionFramework": "4.17.1",
+    "servicePath": "C:\\Users\\User\\OneDrive\\Desktop\\UTEC\\2025 - 1\\Cloud Computing\\cloud-computing-final-project\\backend\\api-compras\\serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "api-compras",
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.12",
+        "region": "us-east-1",
+        "role": "arn:aws:iam::633777173661:role/LabRole",
+        "environment": {
+          "PYTHONPATH": "src/",
+          "JWT_SECRET": "<REDACTED>",
+          "DYNAMODB_TABLE_PURCHASES": "dev-t-purchases"
+        }
+      },
+      "plugins": [
+        "serverless-dotenv-plugin",
+        "serverless-python-requirements",
+        "serverless-openapi-documentation",
+        "serverless-offline"
+      ],
+      "custom": {
+        "pythonRequirements": {
+          "dockerizePip": true,
+          "fileName": "requirements.txt"
+        },
+        "documentation": {
+          "version": "1.0.0",
+          "title": "API Compras",
+          "description": "API para listar y registrar compras",
+          "models": {
+            "Product": {
+              "type": "object",
+              "properties": {
+                "product_id": {
+                  "type": "string",
+                  "description": "ID del producto"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "description": "Cantidad solicitada"
+                }
+              },
+              "required": [
+                "product_id",
+                "quantity"
+              ],
+              "example": {
+                "product_id": "abc123",
+                "quantity": 2
+              }
+            },
+            "Purchase": {
+              "type": "object",
+              "properties": {
+                "tenant_id": {
+                  "type": "string",
+                  "description": "ID del tenant"
+                },
+                "purchase_id": {
+                  "type": "string",
+                  "description": "ID de la compra"
+                },
+                "user_id": {
+                  "type": "string",
+                  "description": "ID del usuario que compró"
+                },
+                "products": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                },
+                "total_price": {
+                  "type": "number",
+                  "description": "Precio total de la compra"
+                },
+                "purchase_date": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Fecha ISO de la compra"
+                },
+                "purchaseDate": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Mismo valor que purchase_date (GSI)"
+                }
+              },
+              "required": [
+                "tenant_id",
+                "purchase_id",
+                "user_id",
+                "products",
+                "total_price",
+                "purchase_date",
+                "purchaseDate"
+              ],
+              "example": {
+                "tenant_id": "dev",
+                "purchase_id": "550e8400-e29b-41d4-a716-446655440000",
+                "user_id": "user789",
+                "products": [
+                  {
+                    "product_id": "abc123",
+                    "quantity": 2
+                  }
+                ],
+                "total_price": 199.9,
+                "purchase_date": "2025-07-19T23:45:00Z",
+                "purchaseDate": "2025-07-19T23:45:00Z"
+              }
+            },
+            "PurchaseListResponse": {
+              "type": "object",
+              "properties": {
+                "purchases": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Purchase"
+                  }
+                },
+                "lastEvaluatedKey": {
+                  "type": "object",
+                  "properties": {
+                    "tenant_id": {
+                      "type": "string"
+                    },
+                    "purchase_id": {
+                      "type": "string"
+                    },
+                    "purchaseDate": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "tenant_id",
+                    "purchase_id",
+                    "purchaseDate"
+                  ]
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "purchases": [
+                  {
+                    "tenant_id": "dev",
+                    "purchase_id": "550e8400-e29b-41d4-a716-446655440000",
+                    "user_id": "user789",
+                    "products": [
+                      {
+                        "product_id": "abc123",
+                        "quantity": 2
+                      }
+                    ],
+                    "total_price": 199.9,
+                    "purchase_date": "2025-07-19T23:45:00Z",
+                    "purchaseDate": "2025-07-19T23:45:00Z"
+                  }
+                ],
+                "lastEvaluatedKey": {
+                  "tenant_id": "dev",
+                  "purchase_id": "550e8400-e29b-41d4-a716-446655440001",
+                  "purchaseDate": "2025-07-19T23:40:00Z"
+                },
+                "message": "Purchases listed successfully"
+              }
+            },
+            "PurchaseRegisterRequest": {
+              "type": "object",
+              "properties": {
+                "products": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                },
+                "totalPrice": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "products",
+                "totalPrice"
+              ],
+              "example": {
+                "products": [
+                  {
+                    "product_id": "abc123",
+                    "quantity": 2
+                  }
+                ],
+                "totalPrice": 199.9
+              }
+            },
+            "PurchaseRegisterResponse": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "purchaseId": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "message": "Purchase registered successfully",
+                "purchaseId": "550e8400-e29b-41d4-a716-446655440000"
+              }
+            }
+          }
+        }
+      },
+      "functions": {
+        "list_purchases": {
+          "handler": "src.list_purchases.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "purchases",
+                "method": "get"
+              }
+            }
+          ],
+          "documentation": {
+            "summary": "Listar compras",
+            "description": "Recupera compras paginadas para el usuario autenticado",
+            "tags": [
+              "Compras"
+            ],
+            "requestHeaders": [
+              {
+                "name": "Authorization",
+                "description": "JWT Bearer token",
+                "required": true
+              }
+            ],
+            "queryParams": [
+              {
+                "name": "limit",
+                "description": "Número máximo de registros a devolver",
+                "required": false,
+                "schema": {
+                  "type": "integer",
+                  "default": 10
+                }
+              },
+              {
+                "name": "lastEvaluatedKey",
+                "description": "Cursor para paginación",
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": [
+              {
+                "statusCode": 200,
+                "description": "OK",
+                "bodyType": "PurchaseListResponse"
+              },
+              {
+                "statusCode": 500,
+                "description": "Error interno"
+              }
+            ]
+          }
+        },
+        "register_purchase": {
+          "handler": "src.register_purchase.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "purchases",
+                "method": "post"
+              }
+            }
+          ],
+          "documentation": {
+            "summary": "Registrar compra",
+            "description": "Crea una nueva compra para el usuario autenticado",
+            "tags": [
+              "Compras"
+            ],
+            "requestHeaders": [
+              {
+                "name": "Authorization",
+                "description": "JWT Bearer token",
+                "required": true
+              }
+            ],
+            "requestBody": {
+              "description": "Datos de la compra",
+              "contentType": "application/json",
+              "schema": {
+                "$ref": "#/components/schemas/PurchaseRegisterRequest"
+              }
+            },
+            "responses": [
+              {
+                "statusCode": 200,
+                "description": "Compra registrada",
+                "bodyType": "PurchaseRegisterResponse"
+              },
+              {
+                "statusCode": 500,
+                "description": "Error interno"
+              }
+            ]
+          }
+        }
+      },
+      "resources": {
+        "Resources": {
+          "PurchasesTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "${self:provider.stage}-t-purchases",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "tenant_id",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "purchase_id",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "purchaseDate",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "tenant_id",
+                  "KeyType": "HASH"
+                },
+                {
+                  "AttributeName": "purchase_id",
+                  "KeyType": "RANGE"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST",
+              "GlobalSecondaryIndexes": [
+                {
+                  "IndexName": "ComprasPorFechaIndex",
+                  "KeySchema": [
+                    {
+                      "AttributeName": "tenant_id",
+                      "KeyType": "HASH"
+                    },
+                    {
+                      "AttributeName": "purchaseDate",
+                      "KeyType": "RANGE"
+                    }
+                  ],
+                  "Projection": {
+                    "ProjectionType": "ALL"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "package": {
+        "exclude": [
+          "__pycache__/**",
+          "venv/**"
+        ]
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "python3.12",
+      "region": "us-east-1",
+      "role": "arn:aws:iam::633777173661:role/LabRole",
+      "environment": {
+        "PYTHONPATH": "src/",
+        "JWT_SECRET": "<REDACTED>",
+        "DYNAMODB_TABLE_PURCHASES": "dev-t-purchases"
+      }
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "error": {
+      "message": "Cannot resolve '${self:provider.stage}' variable at 'resources.Resources.PurchasesTable.Properties.TableName'. No value is available for this variable, and no default value was provided. Please check your variable definitions or provide a default value.",
+      "stack": "Error: Cannot resolve '${self:provider.stage}' variable at 'resources.Resources.PurchasesTable.Properties.TableName'. No value is available for this variable, and no default value was provided. Please check your variable definitions or provide a default value.\n    at _ResolverManager.resolve (file:///C:/Users/User/.serverless/releases/4.17.1/package/dist/sf-core.js:831:31915)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async #handlePlaceholderNode (file:///C:/Users/User/.serverless/releases/4.17.1/package/dist/sf-core.js:831:30122)\n    at async file:///C:/Users/User/.serverless/releases/4.17.1/package/dist/sf-core.js:831:27994\n    at async processNodeAndHandleCompletion (file:///C:/Users/User/.serverless/releases/4.17.1/package/dist/sf-core.js:831:16773)",
+      "code": "MISSING_VARIABLE_RESULT"
+    },
+    "serviceRawFile": "\r\nservice: api-compras\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.12\r\n  region: us-east-1\r\n  role: arn:aws:iam::633777173661:role/LabRole\r\n  environment:\r\n    PYTHONPATH: src/\r\n    JWT_SECRET: ${env:JWT_SECRET}\r\n    DYNAMODB_TABLE_PURCHASES: ${sls:stage}-t-purchases\r\n\r\nplugins:\r\n  - serverless-dotenv-plugin\r\n  - serverless-python-requirements\r\n  - serverless-openapi-documentation\r\n  - serverless-offline\r\n\r\ncustom:\r\n  pythonRequirements:\r\n    dockerizePip: true\r\n    fileName: requirements.txt\r\n\r\n#API Documentation Swagger\r\n  documentation:\r\n    version: \"1.0.0\"\r\n    title: API Compras\r\n    description: API para listar y registrar compras\r\n    models:\r\n      Product:\r\n        type: object\r\n        properties:\r\n          product_id:\r\n            type: string\r\n            description: ID del producto\r\n          quantity:\r\n            type: integer\r\n            description: Cantidad solicitada\r\n        required:\r\n          - product_id\r\n          - quantity\r\n        example:\r\n          product_id: \"abc123\"\r\n          quantity: 2\r\n\r\n      Purchase:\r\n        type: object\r\n        properties:\r\n          tenant_id:\r\n            type: string\r\n            description: ID del tenant\r\n          purchase_id:\r\n            type: string\r\n            description: ID de la compra\r\n          user_id:\r\n            type: string\r\n            description: ID del usuario que compró\r\n          products:\r\n            type: array\r\n            items:\r\n              $ref: '#/components/schemas/Product'\r\n          total_price:\r\n            type: number\r\n            description: Precio total de la compra\r\n          purchase_date:\r\n            type: string\r\n            format: date-time\r\n            description: Fecha ISO de la compra\r\n          purchaseDate:\r\n            type: string\r\n            format: date-time\r\n            description: Mismo valor que purchase_date (GSI)\r\n        required:\r\n          - tenant_id\r\n          - purchase_id\r\n          - user_id\r\n          - products\r\n          - total_price\r\n          - purchase_date\r\n          - purchaseDate\r\n        example:\r\n          tenant_id: \"dev\"\r\n          purchase_id: \"550e8400-e29b-41d4-a716-446655440000\"\r\n          user_id: \"user789\"\r\n          products:\r\n            - product_id: \"abc123\"\r\n              quantity: 2\r\n          total_price: 199.90\r\n          purchase_date: \"2025-07-19T23:45:00Z\"\r\n          purchaseDate: \"2025-07-19T23:45:00Z\"\r\n\r\n      PurchaseListResponse:\r\n        type: object\r\n        properties:\r\n          purchases:\r\n            type: array\r\n            items:\r\n              $ref: '#/components/schemas/Purchase'\r\n          lastEvaluatedKey:\r\n            type: object\r\n            properties:\r\n              tenant_id:\r\n                type: string\r\n              purchase_id:\r\n                type: string\r\n              purchaseDate:\r\n                type: string\r\n                format: date-time\r\n            required:\r\n              - tenant_id\r\n              - purchase_id\r\n              - purchaseDate\r\n          message:\r\n            type: string\r\n        example:\r\n          purchases:\r\n            - tenant_id: \"dev\"\r\n              purchase_id: \"550e8400-e29b-41d4-a716-446655440000\"\r\n              user_id: \"user789\"\r\n              products:\r\n                - product_id: \"abc123\"\r\n                  quantity: 2\r\n              total_price: 199.90\r\n              purchase_date: \"2025-07-19T23:45:00Z\"\r\n              purchaseDate: \"2025-07-19T23:45:00Z\"\r\n          lastEvaluatedKey:\r\n            tenant_id: \"dev\"\r\n            purchase_id: \"550e8400-e29b-41d4-a716-446655440001\"\r\n            purchaseDate: \"2025-07-19T23:40:00Z\"\r\n          message: \"Purchases listed successfully\"\r\n\r\n      PurchaseRegisterRequest:\r\n        type: object\r\n        properties:\r\n          products:\r\n            type: array\r\n            items:\r\n              $ref: '#/components/schemas/Product'\r\n          totalPrice:\r\n            type: number\r\n        required:\r\n          - products\r\n          - totalPrice\r\n        example:\r\n          products:\r\n            - product_id: \"abc123\"\r\n              quantity: 2\r\n          totalPrice: 199.90\r\n\r\n      PurchaseRegisterResponse:\r\n        type: object\r\n        properties:\r\n          message:\r\n            type: string\r\n          purchaseId:\r\n            type: string\r\n        example:\r\n          message: \"Purchase registered successfully\"\r\n          purchaseId: \"550e8400-e29b-41d4-a716-446655440000\"\r\n#API Documentation Swagger\r\n\r\n\r\nfunctions:\r\n  list_purchases:\r\n    handler: src.list_purchases.lambda_handler\r\n    events:\r\n      - http:\r\n          path: purchases\r\n          method: get\r\n\r\n#API Documentation Swagger\r\n    documentation:\r\n      summary: \"Listar compras\"\r\n      description: \"Recupera compras paginadas para el usuario autenticado\"\r\n      tags:\r\n        - Compras\r\n      requestHeaders:\r\n        - name: Authorization\r\n          description: \"JWT Bearer token\"\r\n          required: true\r\n      queryParams:\r\n        - name: limit\r\n          description: \"Número máximo de registros a devolver\"\r\n          required: false\r\n          schema:\r\n            type: integer\r\n            default: 10\r\n        - name: lastEvaluatedKey\r\n          description: \"Cursor para paginación\"\r\n          required: false\r\n          schema:\r\n            type: string\r\n      responses:\r\n        - statusCode: 200\r\n          description: \"OK\"\r\n          bodyType: PurchaseListResponse\r\n        - statusCode: 500\r\n          description: \"Error interno\"\r\n#API Documentation Swagger\r\n\r\n\r\n\r\n  register_purchase:\r\n    handler: src.register_purchase.lambda_handler\r\n    events:\r\n      - http:\r\n          path: purchases\r\n          method: post\r\n\r\n#API Documentation Swagger\r\n    documentation:\r\n      summary: \"Registrar compra\"\r\n      description: \"Crea una nueva compra para el usuario autenticado\"\r\n      tags:\r\n        - Compras\r\n      requestHeaders:\r\n        - name: Authorization\r\n          description: \"JWT Bearer token\"\r\n          required: true\r\n      requestBody:\r\n        description: \"Datos de la compra\"\r\n        contentType: \"application/json\"\r\n        schema:\r\n          $ref: \"#/components/schemas/PurchaseRegisterRequest\"\r\n      responses:\r\n        - statusCode: 200\r\n          description: \"Compra registrada\"\r\n          bodyType: PurchaseRegisterResponse\r\n        - statusCode: 500\r\n          description: \"Error interno\"\r\n#API Documentation Swagger\r\n\r\nresources:\r\n  Resources:\r\n    PurchasesTable:\r\n      Type: AWS::DynamoDB::Table\r\n      Properties:\r\n        TableName: ${self:provider.stage}-t-purchases\r\n        AttributeDefinitions:\r\n          - AttributeName: \"tenant_id\"\r\n            AttributeType: \"S\"\r\n          - AttributeName: \"purchase_id\"\r\n            AttributeType: \"S\"\r\n          - AttributeName: \"purchaseDate\"\r\n            AttributeType: \"S\"\r\n        KeySchema:\r\n          - AttributeName: \"tenant_id\"\r\n            KeyType: \"HASH\"\r\n          - AttributeName: \"purchase_id\"\r\n            KeyType: \"RANGE\"\r\n        BillingMode: PAY_PER_REQUEST\r\n        GlobalSecondaryIndexes:\r\n          - IndexName: \"ComprasPorFechaIndex\"\r\n            KeySchema:\r\n              - AttributeName: \"tenant_id\"\r\n                KeyType: \"HASH\"\r\n              - AttributeName: \"purchaseDate\"\r\n                KeyType: \"RANGE\"\r\n            Projection:\r\n              ProjectionType: \"ALL\"\r\n\r\npackage:\r\n  exclude:\r\n    - __pycache__/**\r\n    - venv/**\r\n",
+    "command": [
+      "offline",
+      "start"
+    ],
+    "options": {
+      "stage": "dev"
+    },
+    "orgId": "a5f0832e-75ac-4cd6-8a3f-e73b9f03f18e",
+    "orgName": "elvislopezgambini",
+    "userId": "fqWZB8HYdzlc0ljg1h",
+    "userName": "elvislopezgambini",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}
