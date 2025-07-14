@@ -64,3 +64,4 @@ def lambda_handler(event, context):
             'statusCode': 500,
             'body': json.dumps({'message': 'Failed to create user', 'error': str(e)}),
         }
+ 
