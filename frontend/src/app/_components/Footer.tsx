@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { footerKeyFeatures } from "../_content/footerKeyFeatures";
-import { footerSections } from "../_content/footerSections";
-import { paymentMethods } from "../_content/paymentMethods";
-import { socialMediaIcons } from "../_content/socialMediaIcons";
+import { footerKeyFeatures } from "../_data/footerKeyFeatures";
+import { footerSections } from "../_data/footerSections";
+import { paymentMethods } from "../_data/paymentMethods";
+import { socialMediaIcons } from "../_data/socialMediaIcons";
 import FooterSection from "./FooterSection";
 import NewsletterForm from "./NewsletterForm";
 

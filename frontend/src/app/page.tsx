@@ -1,19 +1,23 @@
-import { getBestSellers } from "@/client/content/getBestSellers";
-import { getBienestarYSalud } from "@/client/content/getBienestarYSalud";
-import { getComicsYMangas } from "@/client/content/getComicsYMangas";
-import { getExitosEmpresariales } from "@/client/content/getExitosEmpresariales";
-import { getLibrosInfantiles } from "@/client/content/getLibrosInfantiles";
-import { getNovedades } from "@/client/content/getNovedades";
-import { getUniversoJuvenil } from "@/client/content/getUniversoJuvenil";
+import { getBookCollections } from "@/client/books/getBookCollections";
 import BookCategorySection from "./_components/BookCategorySection";
 import HeroSection from "./_components/HeroSection";
 
-export default function Page() {
+export default async function Page() {
+  const bookCollections = await getBookCollections({ limit: 20 });
+
   return (
     <main className="flex w-full flex-col items-center justify-center gap-10">
       <HeroSection />
 
-      <BookCategorySection
+      {bookCollections.map((collection, index) => (
+        <BookCategorySection
+          key={index}
+          category={collection.collectionName}
+          items={collection.books}
+        />
+      ))}
+
+      {/* <BookCategorySection
         category="✨NOVEDADES CON OLOR A TINTA"
         fetch={getNovedades}
       />
@@ -46,7 +50,7 @@ export default function Page() {
       <BookCategorySection
         category="🧸LIBROS INFANTILES PARA TODOS"
         fetch={getLibrosInfantiles}
-      />
+      /> */}
     </main>
   );
 }

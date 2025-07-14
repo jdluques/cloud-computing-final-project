@@ -1,4 +1,4 @@
-export const bookCategories: {
+const bookCategories: {
   title: string;
   subcategories: { title: string; items: { title: string }[] }[];
 }[] = [
@@ -22,7 +22,7 @@ export const bookCategories: {
         items: [
           { title: "Infantil (Kodomo)" },
           { title: "Juvenil Femenino (Shojo)" },
-          { title: "Juvenil Masculino (Shonen" },
+          { title: "Juvenil Masculino (Shonen)" },
           { title: "Joven Adulto Femenino (Josei)" },
           { title: "Joven Adulto Masculino (Seinen)" },
           { title: "Terror" },

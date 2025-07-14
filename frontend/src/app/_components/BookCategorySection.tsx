@@ -12,20 +12,18 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { CarouselItemSchema } from "@/types/content";
+import { BookCardSchema } from "@/types/books/BookCardSchema";
 import Image from "next/image";
 import z from "zod";
 
 interface BookCategorySectionProps {
   category: string;
-  fetch: () => Promise<z.infer<typeof CarouselItemSchema>[]>;
+  items: z.infer<typeof BookCardSchema>[];
 }
 
 export default async function BookCategorySection(
   props: BookCategorySectionProps,
 ) {
-  const items = await props.fetch();
-
   return (
     <main className="flex w-full flex-col gap-5">
       <section className="flex items-center justify-between px-15">
@@ -36,7 +34,7 @@ export default async function BookCategorySection(
 
       <Carousel className="flex w-full flex-row px-14">
         <CarouselContent>
-          {items.map((items, index) => (
+          {props.items.map((items, index) => (
             <CarouselItem key={index} className="basis-1/6">
               <Card>
                 <CardHeader>

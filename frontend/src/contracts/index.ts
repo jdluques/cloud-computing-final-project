@@ -1,6 +1,8 @@
-import { contentContract } from "./content";
+import { booksContract } from "./books";
+import { contentsContract } from "./contents";
 import { c } from "./contract";
 
 export const contract = c.router({
-  contents: contentContract,
+  contents: contentsContract,
+  books: booksContract,
 });

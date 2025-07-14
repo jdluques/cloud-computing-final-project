@@ -1,3 +1,7 @@
 export default function Page() {
-  return null;
+  return (
+    <main>
+      <section></section>
+    </main>
+  );
 }

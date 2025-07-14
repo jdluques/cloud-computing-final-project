@@ -13,35 +13,21 @@
       "children": [
         {
           "type": "route",
+          "uuid": "4ba1b5b5-219d-4c9d-9d40-0ab27f8cb168"
+        },
+        {
+          "type": "route",
           "uuid": "a5ad4670-99f2-411e-aea5-027af3a902d6"
-        },
+        }
+      ]
+    },
+    {
+      "uuid": "3ca527b9-b17f-4d9a-9c43-034a4dc9a805",
+      "name": "books",
+      "children": [
         {
           "type": "route",
-          "uuid": "a9eac680-7ecf-473c-9da5-003c1aa95cc2"
-        },
-        {
-          "type": "route",
-          "uuid": "104e2193-0fa2-4658-b6ab-d679bdc4b700"
-        },
-        {
-          "type": "route",
-          "uuid": "c268d178-46c8-4bdb-aeda-926c3a1f753b"
-        },
-        {
-          "type": "route",
-          "uuid": "7fc3c223-6d52-4e71-8269-186fc410add3"
-        },
-        {
-          "type": "route",
-          "uuid": "6b3b035f-f8f0-47f9-afc5-609d86b47c69"
-        },
-        {
-          "type": "route",
-          "uuid": "6b271cb8-247b-4721-97c7-a472c49b3b3e"
-        },
-        {
-          "type": "route",
-          "uuid": "2ba2097b-4fed-4087-8022-99d36202946d"
+          "uuid": "48ce11df-b477-4b48-a361-48822167c9bb"
         }
       ]
     }
@@ -79,22 +65,22 @@
       "streamingInterval": 0
     },
     {
-      "uuid": "a9eac680-7ecf-473c-9da5-003c1aa95cc2",
-      "type": "http",
+      "uuid": "4ba1b5b5-219d-4c9d-9d40-0ab27f8cb168",
+      "type": "crud",
       "documentation": "",
-      "method": "get",
-      "endpoint": "contents/novedades",
+      "method": "",
+      "endpoint": "contents/book-categories",
       "responses": [
         {
-          "uuid": "2394e097-b1d6-4bbd-b043-98017d8a368b",
-          "body": "",
+          "uuid": "537206d0-70dc-4438-a396-465188e037d8",
+          "body": "{}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
           "headers": [],
           "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "xtv4",
+          "databucketID": "jrq3",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -110,14 +96,14 @@
       "streamingInterval": 0
     },
     {
-      "uuid": "104e2193-0fa2-4658-b6ab-d679bdc4b700",
-      "type": "http",
+      "uuid": "48ce11df-b477-4b48-a361-48822167c9bb",
+      "type": "crud",
       "documentation": "",
-      "method": "get",
-      "endpoint": "contents/best-sellers",
+      "method": "",
+      "endpoint": "",
       "responses": [
         {
-          "uuid": "6d26ff1e-d23e-478b-b825-a1057dd2853b",
+          "uuid": "aa9c034e-d183-43b4-9d36-e2c05bb5fc7d",
           "body": "{}",
           "latency": 0,
           "statusCode": 200,
@@ -125,162 +111,7 @@
           "headers": [],
           "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "xtv4",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null,
-      "streamingMode": null,
-      "streamingInterval": 0
-    },
-    {
-      "uuid": "c268d178-46c8-4bdb-aeda-926c3a1f753b",
-      "type": "http",
-      "documentation": "",
-      "method": "get",
-      "endpoint": "contents/bienestar-y-salud",
-      "responses": [
-        {
-          "uuid": "b244f250-4936-4376-8170-7227969425a6",
-          "body": "{}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "",
-          "headers": [],
-          "bodyType": "DATABUCKET",
-          "filePath": "",
-          "databucketID": "xtv4",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null,
-      "streamingMode": null,
-      "streamingInterval": 0
-    },
-    {
-      "uuid": "7fc3c223-6d52-4e71-8269-186fc410add3",
-      "type": "http",
-      "documentation": "",
-      "method": "get",
-      "endpoint": "contents/exitos-empresariales",
-      "responses": [
-        {
-          "uuid": "15556733-ea2a-45a9-aada-7f6814c8a2c1",
-          "body": "{}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "",
-          "headers": [],
-          "bodyType": "DATABUCKET",
-          "filePath": "",
-          "databucketID": "xtv4",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null,
-      "streamingMode": null,
-      "streamingInterval": 0
-    },
-    {
-      "uuid": "6b3b035f-f8f0-47f9-afc5-609d86b47c69",
-      "type": "http",
-      "documentation": "",
-      "method": "get",
-      "endpoint": "contents/universo-juvenil",
-      "responses": [
-        {
-          "uuid": "c61fdded-893e-4f22-9a0e-955b1a1764f8",
-          "body": "{}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "",
-          "headers": [],
-          "bodyType": "DATABUCKET",
-          "filePath": "",
-          "databucketID": "xtv4",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null,
-      "streamingMode": null,
-      "streamingInterval": 0
-    },
-    {
-      "uuid": "6b271cb8-247b-4721-97c7-a472c49b3b3e",
-      "type": "http",
-      "documentation": "",
-      "method": "get",
-      "endpoint": "contents/comics-y-mangas",
-      "responses": [
-        {
-          "uuid": "468e160b-1002-4306-8e90-230c80207d90",
-          "body": "{}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "",
-          "headers": [],
-          "bodyType": "DATABUCKET",
-          "filePath": "",
-          "databucketID": "xtv4",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null,
-      "streamingMode": null,
-      "streamingInterval": 0
-    },
-    {
-      "uuid": "2ba2097b-4fed-4087-8022-99d36202946d",
-      "type": "http",
-      "documentation": "",
-      "method": "get",
-      "endpoint": "contents/libros-infantiles",
-      "responses": [
-        {
-          "uuid": "c3ace31c-537b-4255-bb67-fe2be344fc75",
-          "body": "{}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "",
-          "headers": [],
-          "bodyType": "DATABUCKET",
-          "filePath": "",
-          "databucketID": "xtv4",
+          "databucketID": "jrq3",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -300,6 +131,10 @@
     {
       "type": "folder",
       "uuid": "7d765580-ca07-43f6-9159-08cd1911b113"
+    },
+    {
+      "type": "folder",
+      "uuid": "3ca527b9-b17f-4d9a-9c43-034a4dc9a805"
     }
   ],
   "proxyMode": false,
@@ -349,9 +184,16 @@
     {
       "uuid": "24e0bc40-c99c-46f5-a1cc-5f29c0063a19",
       "id": "xtv4",
-      "name": "HomePageCarousel",
+      "name": "books",
       "documentation": "",
-      "value": "[\n  {{#repeat 20}}\n  {\n    \"imageUrl\": \"{{faker 'image.urlLoremFlickr' width=178 height=255}}\",\n    \"author\": \"{{faker 'book.author'}}\",\n    \"title\": \"{{faker 'book.title'}}\",\n    \"price\": {{faker 'number.float' min=1 max=500 fractionDigits=2}}\n  }\n  {{/repeat}}\n]"
+      "value": "[\r\n  {{#repeat 1000}}\r\n  {\r\n    \"id\": \"{{faker 'string.uuid'}}\",\r\n    \"imageUrl\": \"{{faker 'image.urlLoremFlickr' width=178 height=255}}\",\r\n    \"author\": \"{{faker 'book.author'}}\",\r\n    \"title\": \"{{faker 'book.title'}}\",\r\n    \"price\": {{faker 'number.float' min=1 max=500 fractionDigits=2}},\r\n    \"publisher\": \"{{faker 'book.publisher'}}\",\r\n    \"isbn\": \"{{faker 'commerce.isbn'}}\",\r\n    \"sku\": \"{{faker 'number.int'}}\",\r\n    \"publicationYear\": \"{{faker 'number.int' min=1000 max=2025}}\",\r\n    \"pages\": \"{{faker 'number.int' min=10 max=5000}}\",\r\n    \"weight\": \"{{faker 'number.float' min=10 max=10 fractionDigits=2}}\",\r\n    \"height\": \"{{faker 'number.float' min=10 max=10 fractionDigits=2}}\",\r\n    \"targetAge\": \"{{faker 'number.int' min=10 max=100}}\",\r\n    \"synopsis\": \"{{lorem 300}}\",\r\n    \"genre\": \"{{oneOf (array 'manga')}}\"\r\n  }\r\n  {{/repeat}}\r\n]\r\n"
+    },
+    {
+      "uuid": "c00067eb-eb93-4341-99f7-a743cc01d722",
+      "id": "jrq3",
+      "name": "categories",
+      "documentation": "",
+      "value": "[\n  {\n    \"title\": \"Manga y Cómics\",\n    \"subcategories\": [\n      {\n        \"title\": \"Cómics\",\n        \"items\": [\n          {\n            \"title\": \"Marvel/DC\",\n            \"slug\": \"marvel-dc\"\n          },\n          {\n            \"title\": \"Cómics Clásicos\",\n            \"slug\": \"comics-clasicos\"\n          },\n          {\n            \"title\": \"Licencias\",\n            \"slug\": \"licencias\"\n          },\n          {\n            \"title\": \"Cómic Independiente\",\n            \"slug\": \"comic-independiente\"\n          },\n          {\n            \"title\": \"Cómic Infantil\",\n            \"slug\": \"comic-infantil\"\n          },\n          {\n            \"title\": \"Cómic Erótico\",\n            \"slug\": \"comic-erotico\"\n          },\n          {\n            \"title\": \"Cómic Efectos a IGV\",\n            \"slug\": \"comic-efectos-a-igv\"\n          }\n        ],\n        \"slug\": \"comics\"\n      },\n      {\n        \"title\": \"Manga\",\n        \"items\": [\n          {\n            \"title\": \"Infantil (Kodomo)\",\n            \"slug\": \"infantil-kodomo\"\n          },\n          {\n            \"title\": \"Juvenil Femenino (Shojo)\",\n            \"slug\": \"juvenil-femenino-shojo\"\n          },\n          {\n            \"title\": \"Juvenil Masculino (Shonen)\",\n            \"slug\": \"juvenil-masculino-shonen\"\n          },\n          {\n            \"title\": \"Joven Adulto Femenino (Josei)\",\n            \"slug\": \"joven-adulto-femenino-josei\"\n          },\n          {\n            \"title\": \"Joven Adulto Masculino (Seinen)\",\n            \"slug\": \"joven-adulto-masculino-seinen\"\n          },\n          {\n            \"title\": \"Terror\",\n            \"slug\": \"terror\"\n          },\n          {\n            \"title\": \"Joven Adulto LGTB (Yaoi)\",\n            \"slug\": \"joven-adulto-lgtb-yaoi\"\n          }\n        ],\n        \"slug\": \"manga\"\n      },\n      {\n        \"title\": \"Temas Relacionados al Comic y Manga\",\n        \"items\": [\n          {\n            \"title\": \"Teoría del Cómic\",\n            \"slug\": \"teoria-del-comic\"\n          },\n          {\n            \"title\": \"Dibujo/Guión\",\n            \"slug\": \"dibujo-guion\"\n          },\n          {\n            \"title\": \"Dibujo de Manga\",\n            \"slug\": \"dibujo-de-manga\"\n          }\n        ],\n        \"slug\": \"temas-relacionados-al-comic-y-manga\"\n      },\n      {\n        \"title\": \"Humor Gráfico\",\n        \"items\": [\n          {\n            \"title\": \"Humor Gráfico\",\n            \"slug\": \"humor-grafico\"\n          }\n        ],\n        \"slug\": \"humor-grafico\"\n      }\n    ],\n    \"slug\": \"manga-y-comics\"\n  },\n  {\n    \"title\": \"No Ficción\",\n    \"subcategories\": [\n      {\n        \"title\": \"Historia del Perú\",\n        \"items\": [\n          {\n            \"title\": \"Mitos y Leyendas Peruanos\",\n            \"slug\": \"mitos-y-leyendas-peruanos\"\n          },\n          {\n            \"title\": \"Historia Peruana Contemporánea\",\n            \"slug\": \"historia-peruana-contemporanea\"\n          }\n        ],\n        \"slug\": \"historia-del-peru\"\n      },\n      {\n        \"title\": \"Historia Universal\",\n        \"items\": [\n          {\n            \"title\": \"Historia Antigua\",\n            \"slug\": \"historia-antigua\"\n          },\n          {\n            \"title\": \"Historia Contemporánea\",\n            \"slug\": \"historia-contemporanea\"\n          },\n          {\n            \"title\": \"Historia de Latinoamérica\",\n            \"slug\": \"historia-de-latinoamerica\"\n          },\n          {\n            \"title\": \"Historia hasta el Siglo XIX\",\n            \"slug\": \"historia-hasta-el-siglo-xix\"\n          }\n        ],\n        \"slug\": \"historia-universal\"\n      },\n      {\n        \"title\": \"Derecho\",\n        \"items\": [\n          {\n            \"title\": \"Derecho Civil\",\n            \"slug\": \"derecho-civil\"\n          },\n          {\n            \"title\": \"Derecho Internacional\",\n            \"slug\": \"derecho-internacional\"\n          },\n          {\n            \"title\": \"Derecho Constitucional\",\n            \"slug\": \"derecho-constitucional\"\n          },\n          {\n            \"title\": \"Teoría del Derecho\",\n            \"slug\": \"teoria-del-derecho\"\n          },\n          {\n            \"title\": \"Manuales de Derecho\",\n            \"slug\": \"manuales-de-derecho\"\n          }\n        ],\n        \"slug\": \"derecho\"\n      },\n      {\n        \"title\": \"Psicología\",\n        \"items\": [\n          {\n            \"title\": \"Psicología y Educación\",\n            \"slug\": \"psicologia-y-educacion\"\n          },\n          {\n            \"title\": \"Psicología Infantil\",\n            \"slug\": \"psicologia-infantil\"\n          },\n          {\n            \"title\": \"Temas de Pareja\",\n            \"slug\": \"temas-de-pareja\"\n          },\n          {\n            \"title\": \"Psicología Social\",\n            \"slug\": \"psicologia-social\"\n          }\n        ],\n        \"slug\": \"psicologia\"\n      },\n      {\n        \"title\": \"Arqueología\",\n        \"items\": [\n          {\n            \"title\": \"Sitio Arqueológicos\",\n            \"slug\": \"sitio-arqueologicos\"\n          },\n          {\n            \"title\": \"Textilería\",\n            \"slug\": \"textileria\"\n          }\n        ],\n        \"slug\": \"arqueologia\"\n      }\n    ],\n    \"slug\": \"no-ficcion\"\n  },\n  {\n    \"title\": \"Libros Infantiles\",\n    \"subcategories\": [\n      {\n        \"title\": \"Cuentos y Novelas Infantiles\",\n        \"items\": [\n          {\n            \"title\": \"Cuentos Clásicos\",\n            \"slug\": \"cuentos-clasicos\"\n          },\n          {\n            \"title\": \"Cuentos Troquelados\",\n            \"slug\": \"cuentos-troquelados\"\n          },\n          {\n            \"title\": \"Cuentos Religiosos Infantiles\",\n            \"slug\": \"cuentos-religiosos-infantiles\"\n          },\n          {\n            \"title\": \"Novelas Clásicas Versión Infantil\",\n            \"slug\": \"novelas-clasicas-version-infantil\"\n          },\n          {\n            \"title\": \"Novelas y Series Infantiles\",\n            \"slug\": \"novelas-y-series-infantiles\"\n          }\n        ],\n        \"slug\": \"cuentos-y-novelas-infantiles\"\n      },\n      {\n        \"title\": \"Aprendizaje Temprano\",\n        \"items\": [\n          {\n            \"title\": \"Libros de Tela\",\n            \"slug\": \"libros-de-tela\"\n          },\n          {\n            \"title\": \"Libros con Texturas\",\n            \"slug\": \"libros-con-texturas\"\n          },\n          {\n            \"title\": \"Primeros Conceptos (Acortanados)\",\n            \"slug\": \"primeros-conceptos-acortanados\"\n          },\n          {\n            \"title\": \"Libros Sumergibles\",\n            \"slug\": \"libros-sumergibles\"\n          },\n          {\n            \"title\": \"Cuentos (Acortonados)\",\n            \"slug\": \"cuentos-acortonados\"\n          }\n        ],\n        \"slug\": \"aprendizaje-temprano\"\n      },\n      {\n        \"title\": \"Libros de Actividades\",\n        \"items\": [\n          {\n            \"title\": \"Infantiles para Colorear\",\n            \"slug\": \"infantiles-para-colorear\"\n          },\n          {\n            \"title\": \"Libros con Stickers\",\n            \"slug\": \"libros-con-stickers\"\n          },\n          {\n            \"title\": \"Actividades de Conocimientos\",\n            \"slug\": \"actividades-de-conocimientos\"\n          },\n          {\n            \"title\": \"Dibujo y Pintura\",\n            \"slug\": \"dibujo-y-pintura\"\n          },\n          {\n            \"title\": \"Modelamientos, Construcción y Plastilina\",\n            \"slug\": \"modelamientos-construccion-y-plastilina\"\n          },\n          {\n            \"title\": \"Libros de Cocina para Niños\",\n            \"slug\": \"libros-de-cocina-para-ninos\"\n          }\n        ],\n        \"slug\": \"libros-de-actividades\"\n      },\n      {\n        \"title\": \"Informativos, enciclopedia y deporte infantil\",\n        \"items\": [\n          {\n            \"title\": \"Temas Generales (Enciclopedia Infantil)\",\n            \"slug\": \"temas-generales-enciclopedia-infantil\"\n          },\n          {\n            \"title\": \"Dinosaurios (Enciclopedia Infantil)\",\n            \"slug\": \"dinosaurios-enciclopedia-infantil\"\n          },\n          {\n            \"title\": \"Ciencias Naturales (Enciclopedia Infantil)\",\n            \"slug\": \"ciencias-naturales-enciclopedia-infantil\"\n          },\n          {\n            \"title\": \"Historia (Enciclopedia Infantil)\",\n            \"slug\": \"historia-enciclopedia-infantil\"\n          },\n          {\n            \"title\": \"Deportes (Enciclopedia Infantil)\",\n            \"slug\": \"deportes-enciclopedia-infantil\"\n          },\n          {\n            \"title\": \"Libro sobre Animales\",\n            \"slug\": \"libro-sobre-animales\"\n          },\n          {\n            \"title\": \"Libro sobre Música\",\n            \"slug\": \"libro-sobre-musica\"\n          },\n          {\n            \"title\": \"Biografías Ilustradas\",\n            \"slug\": \"biografias-ilustradas\"\n          }\n        ],\n        \"slug\": \"informativos-enciclopedia-y-deporte-infantil\"\n      }\n    ],\n    \"slug\": \"libros-infantiles\"\n  }\n]"
     }
   ],
   "callbacks": []

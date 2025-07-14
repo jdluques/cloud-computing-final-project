@@ -1,17 +1,24 @@
+import { getBookCategories } from "@/client/content/getBookCategories";
+import { Button } from "@/components/ui/button";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { ArrowRight, Book } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import { bookCategories } from "../_content/bookCategories";
-import { navigationSections } from "../_content/navigationSections";
+import { navigationSections } from "../_data/navigationSections";
 
-export default function Header() {
+export default async function Header() {
+  const bookCategories = await getBookCategories();
+
   return (
     <nav className="bg-accent flex w-full flex-col">
       <header className="flex flex-row items-center justify-between px-3 py-3">
@@ -38,10 +45,16 @@ export default function Header() {
                 </Link>
               </Button>
             ) : (
-              <Button key={index}>
-                <section.Icon />
-                {section.title}
-              </Button>
+              <Popover key={index}>
+                <PopoverTrigger>
+                  <Button>
+                    <section.Icon />
+                    {section.title}
+                  </Button>
+                </PopoverTrigger>
+
+                <PopoverContent></PopoverContent>
+              </Popover>
             ),
           )}
         </section>
