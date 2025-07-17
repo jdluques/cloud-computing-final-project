@@ -1,5 +1,7 @@
-import { BookCategorySchema } from "@/types/books/BookCategorySchema";
+import { BookCategorySchema } from "@/types/contents/BookCategorySchema";
+import { BookCollectionSchema } from "@/types/contents/BookCollectionSchema";
 import { HeroImageSchema } from "@/types/contents/HeroImageSchema";
+import z from "zod";
 import { c } from "./contract";
 
 export const contentsContract = c.router({
@@ -14,7 +16,14 @@ export const contentsContract = c.router({
     method: "GET",
     path: "/contents/book-categories",
     responses: {
-      200: BookCategorySchema.array(),
+      200: z.array(BookCategorySchema),
+    },
+  },
+  getBookCollections: {
+    method: "GET",
+    path: "/contents/book-collections",
+    responses: {
+      200: z.array(BookCollectionSchema),
     },
   },
 });

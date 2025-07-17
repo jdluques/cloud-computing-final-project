@@ -22,14 +22,14 @@ export default async function Header() {
   return (
     <nav className="bg-accent flex w-full flex-col">
       <header className="flex flex-row items-center justify-between px-3 py-3">
-        <section className="">
+        <Link href={"/"}>
           <Image
             src={"/next.svg"}
             alt={"Ibero Librerías Logo"}
             width={100}
             height={100}
           />
-        </section>
+        </Link>
 
         <section className="w-2xl">
           <Input placeholder="Buscar por título, auto o ISBN" />
@@ -46,7 +46,7 @@ export default async function Header() {
               </Button>
             ) : (
               <Popover key={index}>
-                <PopoverTrigger>
+                <PopoverTrigger asChild>
                   <Button>
                     <section.Icon />
                     {section.title}
@@ -63,7 +63,7 @@ export default async function Header() {
       <footer className="bg-primary flex w-full flex-row items-center justify-center gap-2">
         {bookCategories.map((category, index) => (
           <HoverCard key={index}>
-            <HoverCardTrigger>
+            <HoverCardTrigger asChild>
               <Button asChild>
                 <Link href={""}>{category.title.toUpperCase()}</Link>
               </Button>
@@ -84,7 +84,7 @@ export default async function Header() {
                     </p>
 
                     {subcategory.items.map((item, itemIndex) => (
-                      <Link key={itemIndex} href={""}>
+                      <Link key={itemIndex} href={item.slug}>
                         <p>{item.title}</p>
                       </Link>
                     ))}

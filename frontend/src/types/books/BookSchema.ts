@@ -8,7 +8,7 @@ export const BookSchema = BookCardSchema.extend({
   publicationYear: z.string(),
   pages: z.string(),
   weight: z.string(),
-  widht: z.string(),
+  width: z.string(),
   height: z.string(),
   targetAge: z.string(),
   synopsis: z.string(),

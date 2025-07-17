@@ -3,7 +3,9 @@ import { PaginationSchema } from "../PaginationSchema";
 
 export const GetBooksQuerySchema = z.object({
   ...PaginationSchema.shape,
-  genre: z
-    .enum(["manga", "comic", "ficcion", "no-ficcion", "infantil", "juvenil"])
-    .optional(),
+  collection: z.string().optional(),
+  category: z.string().optional(),
+  subcategory: z.string().optional(),
+  subsubcategory: z.string().optional(),
+  search: z.string().optional(),
 });

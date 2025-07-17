@@ -4,6 +4,6 @@ export const BookCardSchema = z.object({
   id: z.string(),
   author: z.string(),
   title: z.string(),
-  price: z.number(),
+  price: z.string(),
   imageUrl: z.string().url(),
 });

@@ -1,56 +1,22 @@
-import { getBookCollections } from "@/client/books/getBookCollections";
-import BookCategorySection from "./_components/BookCategorySection";
+import { getBookCollections } from "@/client/content/getBookCollections";
+import BookCollectionSection from "./_components/BookCollectionSection";
 import HeroSection from "./_components/HeroSection";
 
 export default async function Page() {
-  const bookCollections = await getBookCollections({ limit: 20 });
+  const bookCollections = await getBookCollections();
 
   return (
     <main className="flex w-full flex-col items-center justify-center gap-10">
       <HeroSection />
 
       {bookCollections.map((collection, index) => (
-        <BookCategorySection
+        <BookCollectionSection
           key={index}
-          category={collection.collectionName}
+          title={collection.title}
           items={collection.books}
+          href={`/${collection.slug}`}
         />
       ))}
-
-      {/* <BookCategorySection
-        category="✨NOVEDADES CON OLOR A TINTA"
-        fetch={getNovedades}
-      />
-
-      <BookCategorySection
-        category="🏆LOS MÁS VENDIDOS"
-        fetch={getBestSellers}
-      />
-
-      <BookCategorySection
-        category="💙ENCUENTRA TU CAMINO"
-        fetch={getBienestarYSalud}
-      />
-
-      <BookCategorySection
-        category="📊ÉXITOS EMPRESARIALES"
-        fetch={getExitosEmpresariales}
-      />
-
-      <BookCategorySection
-        category="🚀UNIVERSO JUVENIL📚"
-        fetch={getUniversoJuvenil}
-      />
-
-      <BookCategorySection
-        category="🪐MUNDO DE CÓMICS Y MANGAS"
-        fetch={getComicsYMangas}
-      />
-
-      <BookCategorySection
-        category="🧸LIBROS INFANTILES PARA TODOS"
-        fetch={getLibrosInfantiles}
-      /> */}
     </main>
   );
 }
