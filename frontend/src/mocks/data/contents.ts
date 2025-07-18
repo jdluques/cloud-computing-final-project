@@ -10,6 +10,7 @@ export function generateHeroImage(): HeroImage {
 }
 
 export function generateHeroImages(count: number): HeroImage[] {
+  console.log(`Generating ${count} mock hero images...`);
   return Array.from({ length: count }, generateHeroImage);
 }
 

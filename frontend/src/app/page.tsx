@@ -14,7 +14,7 @@ export default async function Page() {
           key={index}
           title={collection.title}
           items={collection.books}
-          href={`/${collection.slug}`}
+          collectionSlug={`/${collection.slug}`}
         />
       ))}
     </main>

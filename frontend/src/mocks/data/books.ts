@@ -50,14 +50,14 @@ export function generateBook(): Book {
         ),
       ),
     ),
-    collectionSlug:
-      faker.helpers.arrayElement(
-        MOCK_COLLECTIONS.map((collection) => collection.slug),
-      ) || undefined,
+    collectionSlug: faker.helpers.arrayElement(
+      MOCK_COLLECTIONS.map((collection) => collection.slug),
+    ),
   };
 }
 
 export function generateBooks(count: number): Book[] {
+  console.log(`Generating ${count} mock books...`);
   return Array.from({ length: count }, generateBook);
 }
 

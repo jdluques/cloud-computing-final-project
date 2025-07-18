@@ -8,14 +8,13 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { BookCardSchema } from "@/types/books/BookCardSchema";
-import { Route } from "next";
 import Link from "next/link";
 import z from "zod";
 
 interface BookCollectionSectionProps {
   title: string;
   items: z.infer<typeof BookCardSchema>[];
-  href: Route;
+  collectionSlug: string;
 }
 
 export default async function BookCollectionSection(
@@ -27,7 +26,7 @@ export default async function BookCollectionSection(
         <h1 className="text-xl font-bold">{props.title}</h1>
 
         <Button asChild>
-          <Link href={props.href}>Ver Todos</Link>
+          <Link href={`/collection/${props.collectionSlug}`}>Ver Todos</Link>
         </Button>
       </section>
 
@@ -40,6 +39,7 @@ export default async function BookCollectionSection(
                 author={item.author}
                 imageUrl={item.imageUrl}
                 price={item.price}
+                href={`/book/${item.id}`}
               />
             </CarouselItem>
           ))}
