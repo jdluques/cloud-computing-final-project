@@ -1,12 +1,11 @@
-import { Book, LucideIcon, Pin, ShoppingCart, User } from "lucide-react";
+import { Book, LucideIcon, Pin } from "lucide-react";
+import { Route } from "next";
 
 export const navigationSections: {
   title: string;
-  href?: string;
+  href: Route;
   Icon: LucideIcon;
 }[] = [
   { title: "Blog", href: "/blog", Icon: Book },
   { title: "Tiendas", href: "/shops", Icon: Pin },
-  { title: "Regístrate", Icon: User },
-  { title: "Carrito", href: "/cart", Icon: ShoppingCart },
 ];

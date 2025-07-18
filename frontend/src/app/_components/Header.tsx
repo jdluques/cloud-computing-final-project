@@ -6,15 +6,12 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { ArrowRight, Book } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { navigationSections } from "../_data/navigationSections";
+import CartButton from "./CartButton";
+import RegisterButton from "./RegisterButton";
 
 export default async function Header() {
   const bookCategories = await getBookCategories();
@@ -36,27 +33,16 @@ export default async function Header() {
         </section>
 
         <section className="flex flex-row justify-end gap-2">
-          {navigationSections.map((section, index) =>
-            section.href ? (
-              <Button key={index} asChild>
-                <Link href={section.href}>
-                  <section.Icon />
-                  {section.title}
-                </Link>
-              </Button>
-            ) : (
-              <Popover key={index}>
-                <PopoverTrigger asChild>
-                  <Button>
-                    <section.Icon />
-                    {section.title}
-                  </Button>
-                </PopoverTrigger>
-
-                <PopoverContent></PopoverContent>
-              </Popover>
-            ),
-          )}
+          {navigationSections.map((section, index) => (
+            <Button key={index} asChild>
+              <Link href={section.href}>
+                <section.Icon />
+                {section.title}
+              </Link>
+            </Button>
+          ))}
+          <RegisterButton />
+          <CartButton />
         </section>
       </header>
 
