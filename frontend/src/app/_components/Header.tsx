@@ -65,7 +65,9 @@ export default async function Header() {
           <HoverCard key={index}>
             <HoverCardTrigger asChild>
               <Button asChild>
-                <Link href={""}>{category.title.toUpperCase()}</Link>
+                <Link href={`/category/${category.slug}`}>
+                  {category.title.toUpperCase()}
+                </Link>
               </Button>
             </HoverCardTrigger>
 
