@@ -18,9 +18,9 @@ interface BookCardProps {
 
 export default function BookCard(props: BookCardProps) {
   return (
-    <Link href={props.href}>
-      <Card>
-        <CardHeader>
+    <Link href={props.href} className="h-115 w-60">
+      <Card className="flex h-115 w-60 flex-col justify-between">
+        <CardHeader className="flex justify-center">
           <Image
             src={props.imageUrl}
             alt={`Image of ${props.title}`}
@@ -29,13 +29,13 @@ export default function BookCard(props: BookCardProps) {
           />
         </CardHeader>
 
-        <CardContent>
-          <h3>{props.title}</h3>
-          <p>{props.author}</p>
+        <CardContent className="line-clamp-3 flex flex-col gap-2">
+          <p className="font-bold">{props.author}</p>
+          <p className="text-wrap">{props.title}</p>
         </CardContent>
 
         <CardFooter>
-          <p>S/. {props.price}</p>
+          <p className="font-bold">S/. {props.price}</p>
         </CardFooter>
       </Card>
     </Link>

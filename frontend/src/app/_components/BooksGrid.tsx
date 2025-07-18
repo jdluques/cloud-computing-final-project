@@ -43,7 +43,7 @@ export default function BooksGrid(props: BooksGridProps) {
         </DropdownMenu>
       </section>
 
-      <section className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <section className="grid w-full justify-items-center gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {props.books.map((book, index) => (
           <BookCard
             key={index}
