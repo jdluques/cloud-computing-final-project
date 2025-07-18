@@ -7,7 +7,7 @@ import { c } from "./contract";
 export const booksContract = c.router({
   getBooks: {
     method: "GET",
-    path: "/books",
+    path: "/api/books",
     query: GetBooksQuerySchema,
     responses: {
       200: BooksGridSchema,
@@ -15,7 +15,7 @@ export const booksContract = c.router({
   },
   getBook: {
     method: "GET",
-    path: "/books/:id",
+    path: "/api/books/:id",
     pathParams: z.object({
       id: z.string(),
     }),

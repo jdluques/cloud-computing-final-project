@@ -1,4 +1,5 @@
-import { getBookCategories } from "@/client/content/getBookCategories";
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   HoverCard,
@@ -6,15 +7,45 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Book } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { ArrowRight, Book, Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { navigationSections } from "../_data/navigationSections";
 import CartButton from "./CartButton";
 import RegisterButton from "./RegisterButton";
 
-export default async function Header() {
-  const bookCategories = await getBookCategories();
+interface BookCategory {
+  slug: string;
+  title: string;
+  subcategories: Array<{
+    title: string;
+    items: Array<{
+      title: string;
+      slug: string;
+    }>;
+  }>;
+}
+
+export default function Header() {
+  const { user } = useAuth();
+  const [bookCategories, setBookCategories] = useState<BookCategory[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/contents/book-categories");
+        if (response.ok) {
+          const categories = await response.json();
+          setBookCategories(categories);
+        }
+      } catch (error) {
+        console.error("Failed to fetch book categories:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <nav className="bg-accent flex w-full flex-col">
@@ -41,6 +72,24 @@ export default async function Header() {
               </Link>
             </Button>
           ))}
+
+          {/* Admin Panel Link */}
+          {user?.role === "ADMIN" && (
+            <Button asChild variant="secondary">
+              <Link href="/admin">
+                <Settings size={16} />
+                Admin
+              </Link>
+            </Button>
+          )}
+
+          {/* My Orders Link for logged in users */}
+          {user && user.role === "CLIENT" && (
+            <Button asChild variant="outline">
+              <Link href="/my-orders">Mis Órdenes</Link>
+            </Button>
+          )}
+
           <RegisterButton />
           <CartButton />
         </section>

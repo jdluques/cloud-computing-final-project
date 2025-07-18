@@ -10,34 +10,49 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
+import { RegisterSchema } from "@/types/auth/AuthSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import EmailField from "./EmailField";
 import PasswordField from "./PasswordField";
 
-const formSchema = z.object({
-  name: z.string().min(1, "El nombre es obligatorio"),
-  email: z.string().email("Correo electrónico inválido"),
-  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-  confirmPassword: z
-    .string()
-    .min(6, "La confirmación de contraseña debe tener al menos 6 caracteres"),
-});
-
 export default function RegisterForm(props: { onClick: () => void }) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { register } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Formulario enviado con los valores:", values);
+  async function onSubmit(values: z.infer<typeof RegisterSchema>) {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await register({
+        email: values.email,
+        password: values.password,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        confirmPassword: values.confirmPassword,
+      });
+    } catch (error) {
+      setError("Error al registrarse. Inténtalo de nuevo.");
+      console.error("Registration error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -46,17 +61,33 @@ export default function RegisterForm(props: { onClick: () => void }) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4"
       >
+        <h2 className="text-xl font-bold">Registrarse</h2>
+
+        {error && <div className="text-sm text-red-500">{error}</div>}
+
         <FormField
           control={form.control}
-          name="name"
+          name="firstName"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nombre</FormLabel>
-
               <FormControl>
                 <Input placeholder="Ingresa tu nombre" {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
+        <FormField
+          control={form.control}
+          name="lastName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Apellido</FormLabel>
+              <FormControl>
+                <Input placeholder="Ingresa tu apellido" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -79,23 +110,27 @@ export default function RegisterForm(props: { onClick: () => void }) {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Contraseña</FormLabel>
-
+              <FormLabel>Confirmar Contraseña</FormLabel>
               <FormControl>
                 <Input
+                  type="password"
                   placeholder="Vuelve a ingresar tu contraseña"
                   {...field}
                 />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit">Registrarse</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Cargando..." : "Registrarse"}
+        </Button>
 
-        <p className="text-md cursor-pointer" onClick={props.onClick}>
+        <p
+          className="text-md cursor-pointer text-center"
+          onClick={props.onClick}
+        >
           ¿Ya tienes una cuenta? Inicia sesión
         </p>
       </form>

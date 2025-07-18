@@ -47,11 +47,13 @@ export default function BooksGrid(props: BooksGridProps) {
         {props.books.map((book, index) => (
           <BookCard
             key={index}
+            id={book.id}
             title={book.title}
             author={book.author}
             imageUrl={book.imageUrl}
             price={book.price}
             href={`/book/${book.id}`}
+            stock={100} // Mock stock, in real app would come from book data
           />
         ))}
       </section>

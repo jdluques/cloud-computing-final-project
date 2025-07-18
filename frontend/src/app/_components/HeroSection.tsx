@@ -1,4 +1,3 @@
-import { getHeroImages } from "@/client/content/getHeroImages";
 import {
   Carousel,
   CarouselContent,
@@ -6,10 +5,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { MOCK_HERO_IMAGES } from "@/mocks/data";
 import Image from "next/image";
 
-export default async function HeroSection() {
-  const heroImages = await getHeroImages();
+export default function HeroSection() {
+  const heroImages = MOCK_HERO_IMAGES;
 
   return (
     <div className="relative w-full">

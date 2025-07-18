@@ -35,6 +35,7 @@ export default async function BookCollectionSection(
           {props.items.map((item, index) => (
             <CarouselItem key={index} className="basis-1/6">
               <BookCard
+                id={item.id}
                 title={item.title}
                 author={item.author}
                 imageUrl={item.imageUrl}

@@ -1,9 +1,13 @@
-import { getBookCollections } from "@/client/content/getBookCollections";
+import { MOCK_BOOKS, MOCK_COLLECTIONS } from "@/mocks/data";
 import BookCollectionSection from "./_components/BookCollectionSection";
 import HeroSection from "./_components/HeroSection";
 
 export default async function Page() {
-  const bookCollections = await getBookCollections();
+  // Using mock data directly (SSR) - combine collections with books
+  const bookCollections = MOCK_COLLECTIONS.map((collection) => ({
+    ...collection,
+    books: MOCK_BOOKS.slice(0, 20), // Take first 20 books for each collection
+  }));
 
   return (
     <main className="flex w-full flex-col items-center justify-center gap-10">
@@ -14,7 +18,7 @@ export default async function Page() {
           key={index}
           title={collection.title}
           items={collection.books}
-          collectionSlug={`/${collection.slug}`}
+          collectionSlug={`/collection/${collection.slug}`}
         />
       ))}
     </main>

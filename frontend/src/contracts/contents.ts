@@ -7,21 +7,21 @@ import { c } from "./contract";
 export const contentsContract = c.router({
   getHeroImages: {
     method: "GET",
-    path: "/contents/hero-images",
+    path: "/api/contents/hero-images",
     responses: {
       200: HeroImageSchema.array(),
     },
   },
   getBookCategories: {
     method: "GET",
-    path: "/contents/book-categories",
+    path: "/api/contents/book-categories",
     responses: {
       200: z.array(BookCategorySchema),
     },
   },
   getBookCollections: {
     method: "GET",
-    path: "/contents/book-collections",
+    path: "/api/contents/book-collections",
     responses: {
       200: z.array(BookCollectionSchema),
     },

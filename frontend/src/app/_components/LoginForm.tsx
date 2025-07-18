@@ -2,28 +2,41 @@
 
 import { Button } from "@/components/ui/button";
 import { Form, FormField } from "@/components/ui/form";
+import { useAuth } from "@/context/AuthContext";
+import { LoginSchema } from "@/types/auth/AuthSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import EmailField from "./EmailField";
 import PasswordField from "./PasswordField";
 
-const formSchema = z.object({
-  email: z.string().email("Correo electrónico inválido"),
-  password: z.string().min(5, "La contraseña debe tener al menos 6 caracteres"),
-});
-
 export default function LoginForm(props: { onClick: () => void }) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Formulario enviado con los valores:", values);
+  async function onSubmit(values: z.infer<typeof LoginSchema>) {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await login(values.email, values.password);
+      // Form will close automatically when user state changes
+    } catch (error) {
+      setError("Credenciales inválidas");
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -32,6 +45,10 @@ export default function LoginForm(props: { onClick: () => void }) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4"
       >
+        <h2 className="text-xl font-bold">Iniciar Sesión</h2>
+
+        {error && <div className="text-sm text-red-500">{error}</div>}
+
         <FormField
           control={form.control}
           name="email"
@@ -44,9 +61,14 @@ export default function LoginForm(props: { onClick: () => void }) {
           render={({ field }) => <PasswordField field={field} />}
         />
 
-        <Button type="submit">Iniciar Sesión</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Cargando..." : "Iniciar Sesión"}
+        </Button>
 
-        <p className="text-md cursor-pointer" onClick={props.onClick}>
+        <p
+          className="text-md cursor-pointer text-center"
+          onClick={props.onClick}
+        >
           ¿No tienes una cuenta? Regístrate
         </p>
       </form>
