@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const bookCategories: {
   title: string;
   subcategories: { title: string; items: { title: string }[] }[];

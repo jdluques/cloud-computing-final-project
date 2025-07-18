@@ -12,4 +12,10 @@ export const BookSchema = BookCardSchema.extend({
   height: z.string(),
   targetAge: z.string(),
   synopsis: z.string(),
+  categorySlug: z.string(),
+  subCategorySlug: z.string(),
+  subSubCategorySlug: z.string(),
+  collectionSlug: z.string().optional(),
 });
+
+export type Book = z.infer<typeof BookSchema>;

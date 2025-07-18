@@ -5,3 +5,5 @@ export const HeroImageSchema = z.object({
   href: z.string().url(),
   alt: z.string(),
 });
+
+export type HeroImage = z.infer<typeof HeroImageSchema>;
