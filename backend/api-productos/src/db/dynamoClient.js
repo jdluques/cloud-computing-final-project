@@ -1,9 +1,11 @@
+db/dynamoClient.js
+
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports = {
-  async put(tableName, item) {
-    return dynamoDb.put({ TableName: tableName, Item: item }).promise();
+  async put(tableName, item, options = {}) {
+    return dynamoDb.put({ TableName: tableName, Item: item, ...options }).promise();
   },
   async get(tableName, key) {
     return dynamoDb.get({ TableName: tableName, Key: key }).promise();

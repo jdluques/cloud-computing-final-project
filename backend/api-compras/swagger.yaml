@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: API Compras
+  version: 1.0.0
+  description: >
+    API multi-tenant protegida con JWT para registrar compras y
+    listar el historial de compras del usuario.
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
+
+paths:
+  /purchases/register:
+    post:
+      summary: Registrar nueva compra
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productId: { type: string, example: "abc-123" }
+                      quantity: { type: integer, example: 2 }
+                totalPrice:
+                  type: number
+                  example: 199.99
+      responses:
+        '200':
+          description: Compra registrada con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string, example: "Purchase registered successfully" }
+                  purchaseId: { type: string, example: "uuid-xyz-1234" }
+        '500':
+          description: Error interno al registrar compra
+
+  /purchases/list:
+    get:
+      summary: Listar compras del usuario (paginado)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, default: 10 }
+          example: 5
+          description: Cantidad máxima de registros a devolver
+        - in: query
+          name: lastEvaluatedKey
+          schema: { type: string }
+          example: '{"tenant_id":"PER","purchaseId":"..."}'
+          description: Clave para continuar paginación
+      responses:
+        '200':
+          description: Lista de compras del usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  purchases:
+                    type: array
+                    items:
+                      type: object
+                  lastEvaluatedKey:
+                    type: string
+                    nullable: true
+                  message:
+                    type: string
+                    example: "Purchases listed successfully"
+        '500':
+          description: Error interno al listar compras

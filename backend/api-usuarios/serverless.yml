@@ -27,6 +27,7 @@ functions:
       - http:
           path: users/register
           method: post
+          cors: true
 
   login_user:
     handler: src.login_user.lambda_handler
@@ -34,6 +35,7 @@ functions:
       - http:
           path: users/login
           method: post
+          cors: true
 
   validate_token:
     handler: src.validate_token.lambda_handler
@@ -41,6 +43,7 @@ functions:
       - http:
           path: users/validate-token
           method: post
+          cors: true
 
 resources:
   Resources:
@@ -51,11 +54,15 @@ resources:
         AttributeDefinitions:
           - AttributeName: "tenant_id"
             AttributeType: "S"
+          - AttributeName: "user_id"
+            AttributeType: "S"
           - AttributeName: "email"
             AttributeType: "S"
         KeySchema:
           - AttributeName: "tenant_id"
             KeyType: "HASH"
+          - AttributeName: "user_id"
+            KeyType: "RANGE"
         BillingMode: PAY_PER_REQUEST
         GlobalSecondaryIndexes:
           - IndexName: EmailIndex

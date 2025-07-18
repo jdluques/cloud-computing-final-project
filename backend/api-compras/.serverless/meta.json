@@ -1,0 +1,220 @@
+{
+  "/home/ubuntu/cloud-project-final/backend/api-compras/serverless.yml": {
+    "versionFramework": "4.17.1",
+    "servicePath": "/home/ubuntu/cloud-project-final/backend/api-compras/serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "org": "elicervantess",
+      "service": "api-compras",
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.12",
+        "role": "arn:aws:iam::633777173661:role/LabRole",
+        "region": "us-east-1",
+        "environment": {
+          "PYTHONPATH": "src/",
+          "DYNAMODB_TABLE_PURCHASES": "dev-t-purchases",
+          "JWT_SECRET": "<REDACTED>"
+        },
+        "iam": {
+          "role": {
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "dynamodb:*"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:us-east-1:*:table/dev-t-purchases",
+                  "arn:aws:dynamodb:us-east-1:*:table/dev-t-purchases/index/*"
+                ]
+              }
+            ]
+          }
+        },
+        "stage": "dev",
+        "versionFunctions": true
+      },
+      "plugins": [
+        "serverless-dotenv-plugin",
+        "serverless-python-requirements"
+      ],
+      "custom": {
+        "pythonRequirements": {
+          "dockerizePip": true,
+          "fileName": "requirements.txt"
+        }
+      },
+      "functions": {
+        "registerPurchase": {
+          "handler": "src/register_purchase.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "purchases/register",
+                "method": "post",
+                "cors": true
+              }
+            }
+          ],
+          "name": "api-compras-dev-registerPurchase"
+        },
+        "listPurchases": {
+          "handler": "src/list_purchases.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "purchases/list",
+                "method": "get",
+                "cors": true
+              }
+            }
+          ],
+          "name": "api-compras-dev-listPurchases"
+        }
+      },
+      "resources": {
+        "Resources": {
+          "PurchasesTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "dev-t-purchases",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "tenant_id",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "purchase_id",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "purchaseDate",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "tenant_id",
+                  "KeyType": "HASH"
+                },
+                {
+                  "AttributeName": "purchase_id",
+                  "KeyType": "RANGE"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST",
+              "GlobalSecondaryIndexes": [
+                {
+                  "IndexName": "PurchasesByDateIndex",
+                  "KeySchema": [
+                    {
+                      "AttributeName": "tenant_id",
+                      "KeyType": "HASH"
+                    },
+                    {
+                      "AttributeName": "purchaseDate",
+                      "KeyType": "RANGE"
+                    }
+                  ],
+                  "Projection": {
+                    "ProjectionType": "ALL"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "package": {
+        "exclude": [
+          "__pycache__/**",
+          "venv/**"
+        ],
+        "artifactsS3KeyDirname": "serverless/api-compras/dev/code-artifacts"
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "python3.12",
+      "role": "arn:aws:iam::633777173661:role/LabRole",
+      "region": "us-east-1",
+      "environment": {
+        "PYTHONPATH": "src/",
+        "DYNAMODB_TABLE_PURCHASES": "dev-t-purchases",
+        "JWT_SECRET": "<REDACTED>"
+      },
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:*"
+              ],
+              "Resource": [
+                "arn:aws:dynamodb:us-east-1:*:table/dev-t-purchases",
+                "arn:aws:dynamodb:us-east-1:*:table/dev-t-purchases/index/*"
+              ]
+            }
+          ]
+        }
+      },
+      "stage": "dev",
+      "versionFunctions": true
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "error": {
+      "message": "User: arn:aws:sts::633777173661:assumed-role/voclabs/user3581639=Cervantes_Ordo__ez,_Jireh_Eliseo_ is not authorized to perform: cloudformation:DescribeStacks on resource: arn:aws:cloudformation:us-east-1:633777173661:stack/api-compras-dev/6389bd50-5937-11f0-bbad-0affc9377d4d with an explicit deny in an identity-based policy",
+      "stack": "ServerlessError2: User: arn:aws:sts::633777173661:assumed-role/voclabs/user3581639=Cervantes_Ordo__ez,_Jireh_Eliseo_ is not authorized to perform: cloudformation:DescribeStacks on resource: arn:aws:cloudformation:us-east-1:633777173661:stack/api-compras-dev/6389bd50-5937-11f0-bbad-0affc9377d4d with an explicit deny in an identity-based policy\n    at file:///home/ubuntu/.serverless/releases/4.17.1/package/dist/sf-core.js:1155:36\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async persistentRequest (file:///home/ubuntu/.serverless/releases/4.17.1/package/dist/sf-core.js:1154:1960)",
+      "code": "AWS_CLOUD_FORMATION_DESCRIBE_STACKS_ACCESS_DENIED"
+    },
+    "serviceRawFile": "org: elicervantess\nservice: api-compras\n\nprovider:\n  name: aws\n  runtime: python3.12\n  role: arn:aws:iam::633777173661:role/LabRole\n  region: us-east-1\n  environment:\n    PYTHONPATH: src/\n    DYNAMODB_TABLE_PURCHASES: ${sls:stage}-t-purchases\n    JWT_SECRET: ${env:JWT_SECRET}\n  iam:\n    role:\n      statements:\n        - Effect: \"Allow\"\n          Action:\n            - dynamodb:*\n          Resource:\n            - \"arn:aws:dynamodb:${self:provider.region}:*:table/${sls:stage}-t-purchases\"\n            - \"arn:aws:dynamodb:${self:provider.region}:*:table/${sls:stage}-t-purchases/index/*\"\n\nplugins:\n  - serverless-dotenv-plugin\n  - serverless-python-requirements\n\ncustom:\n  pythonRequirements:\n    dockerizePip: true\n    fileName: requirements.txt\n\nfunctions:\n  registerPurchase:\n    handler: src/register_purchase.lambda_handler\n    events:\n      - http:\n          path: purchases/register\n          method: post\n          cors: true\n\n  listPurchases:\n    handler: src/list_purchases.lambda_handler\n    events:\n      - http:\n          path: purchases/list\n          method: get\n          cors: true\n\nresources:\n  Resources:\n    PurchasesTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: ${sls:stage}-t-purchases\n        AttributeDefinitions:\n          - AttributeName: tenant_id\n            AttributeType: S\n          - AttributeName: purchase_id\n            AttributeType: S\n          - AttributeName: purchaseDate\n            AttributeType: S\n        KeySchema:\n          - AttributeName: tenant_id\n            KeyType: HASH\n          - AttributeName: purchase_id\n            KeyType: RANGE\n        BillingMode: PAY_PER_REQUEST\n        GlobalSecondaryIndexes:\n          - IndexName: PurchasesByDateIndex\n            KeySchema:\n              - AttributeName: tenant_id\n                KeyType: HASH\n              - AttributeName: purchaseDate\n                KeyType: RANGE\n            Projection:\n              ProjectionType: ALL\n\npackage:\n  exclude:\n    - __pycache__/**\n    - venv/**\n",
+    "command": [
+      "info"
+    ],
+    "options": {},
+    "orgId": "012d43c0-04e9-4842-acde-976bbda22361",
+    "orgName": "elicervantess",
+    "userId": "DZWtBNtphGy2dfGHHF",
+    "userName": "elicervantess",
+    "serviceProviderAwsAccountId": "633777173661",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:633777173661:stack/api-compras-dev/6389bd50-5937-11f0-bbad-0affc9377d4d",
+    "serviceProviderAwsCfStackCreated": "2025-07-05T00:31:27.782Z",
+    "serviceProviderAwsCfStackUpdated": "2025-07-16T18:14:21.426Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "RegisterPurchaseLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:633777173661:function:api-compras-dev-registerPurchase:18",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-api-compras-dev-RegisterPurchaseLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServiceEndpoint",
+        "OutputValue": "https://h94py1qn96.execute-api.us-east-1.amazonaws.com/dev",
+        "Description": "URL of the service endpoint",
+        "ExportName": "sls-api-compras-dev-ServiceEndpoint"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-us-east-1-25e441ba-ae69",
+        "ExportName": "sls-api-compras-dev-ServerlessDeploymentBucketName"
+      },
+      {
+        "OutputKey": "ListPurchasesLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:633777173661:function:api-compras-dev-listPurchases:18",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-api-compras-dev-ListPurchasesLambdaFunctionQualifiedArn"
+      }
+    ]
+  }
+}

@@ -1,15 +1,16 @@
 import os
 import datetime
-import jwt  # Asegúrate de tener instalado PyJWT (NO usar `jwt` 1.4.0)
+import jwt
 
 JWT_SECRET = os.getenv('JWT_SECRET')
-TOKEN_EXPIRY = int(os.getenv('TOKEN_EXPIRY'))  # en segundos
+TOKEN_EXPIRY = int(os.getenv('TOKEN_EXPIRY'))
 
-def generate_token(tenant_id, email):
+def generate_token(tenant_id, email, user_id):
     return jwt.encode(
         {
             "tenantId": tenant_id,
             "email": email,
+            "user_id": user_id,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=TOKEN_EXPIRY)
         },
         JWT_SECRET,

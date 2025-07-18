@@ -1,0 +1,195 @@
+openapi: 3.0.0
+info:
+  title: API Productos
+  version: 1.0.0
+  description: >
+    API multi-tenant protegida con token JWT para crear, listar, buscar,
+    modificar y eliminar productos. Soporta búsquedas globales y paginación.
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
+
+paths:
+  /products:
+    post:
+      summary: Crear producto
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string, example: "Laptop Asus" }
+                description: { type: string, example: "Equipo ultrabook con 16GB RAM" }
+                price: { type: number, example: 1299.99 }
+                stock: { type: integer, example: 20 }
+                categories:
+                  type: array
+                  items: { type: string, example: "Electrónica" }
+      responses:
+        '200':
+          description: Producto creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string, example: "Product created successfully!" }
+                  product:
+                    type: object
+        '400':
+          description: Validación fallida
+        '401':
+          description: Token inválido
+        '500':
+          description: Error interno
+
+    get:
+      summary: Listar productos (paginado)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer }
+          example: 10
+        - in: query
+          name: lastKey
+          schema: { type: string }
+          description: Última clave para paginación
+          example: '{"tenant_id":"PER","productId":"..."}'
+        - in: query
+          name: global
+          schema: { type: string }
+          example: "true"
+          description: Si es true, lista todos los productos sin filtrar por tenant
+      responses:
+        '200':
+          description: Lista paginada de productos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                  lastKey:
+                    type: string
+                    nullable: true
+        '401':
+          description: Token inválido
+        '500':
+          description: Error interno
+
+  /products/{productId}:
+    get:
+      summary: Buscar producto por código
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema: { type: string }
+          example: "f7d5-1234-5678"
+        - in: query
+          name: global
+          schema: { type: string }
+          example: "true"
+          description: Si es true, busca usando índice global
+      responses:
+        '200':
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string, example: "Success" }
+                  data:
+                    type: object
+        '401':
+          description: Token inválido
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error interno
+
+    put:
+      summary: Modificar producto
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string, example: "Laptop Asus" }
+                description: { type: string, example: "Equipo actualizado con 32GB RAM" }
+                price: { type: number, example: 1399.99 }
+                stock: { type: integer, example: 15 }
+                categories:
+                  type: array
+                  items: { type: string, example: "Electrónica" }
+      responses:
+        '200':
+          description: Producto modificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string, example: "Product updated successfully!" }
+                  product:
+                    type: object
+        '401':
+          description: No autorizado o token inválido
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error interno
+
+    delete:
+      summary: Eliminar producto
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Producto eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string, example: "Product deleted successfully!" }
+        '401':
+          description: No autorizado
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error interno
+

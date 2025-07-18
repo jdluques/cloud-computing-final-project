@@ -1,0 +1,125 @@
+openapi: 3.0.0
+info:
+  title: API Usuarios
+  version: 1.0.0
+  description: >
+    API multi-tenant para crear usuarios, iniciar sesión y validar tokens.
+    Devuelve JWT válidos por 1 hora.
+
+paths:
+  /users/register:
+    post:
+      summary: Registrar nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                country:
+                  type: string
+                  example: PER
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  example: mySecureP@ss123
+                gender:
+                  type: string
+                  enum: [Masculino, Femenino]
+                  example: Masculino
+                address:
+                  type: string
+                  example: Av. Siempre Viva 742
+                document_type:
+                  type: string
+                  example: DNI
+                document_number:
+                  type: string
+                  example: "12345678"
+      responses:
+        '200':
+          description: Usuario creado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string, example: "User created successfully" }
+                  tenantId: { type: string, example: "PER" }
+                  userId: { type: string, example: "uuid-v4-here" }
+        '400':
+          description: Email ya existe o datos inválidos
+        '500':
+          description: Error interno
+
+  /users/login:
+    post:
+      summary: Iniciar sesión
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  example: mySecureP@ss123
+      responses:
+        '200':
+          description: JWT devuelto con datos del usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string, example: "eyJhbGciOiJIUzI1Ni..." }
+                  tenantId: { type: string, example: "PER" }
+                  userId: { type: string, example: "uuid-v4-here" }
+                  email: { type: string, example: "user@example.com" }
+        '401':
+          description: Credenciales incorrectas
+        '500':
+          description: Error interno
+
+  /users/validate-token:
+    post:
+      summary: Validar token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: eyJhbGciOiJIUzI1Ni...
+      responses:
+        '200':
+          description: Token válido con datos decodificados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string, example: "Token is valid" }
+                  data:
+                    type: object
+                    properties:
+                      tenantId: { type: string, example: "PER" }
+                      email: { type: string, example: "user@example.com" }
+                      userId: { type: string, example: "uuid-v4-here" }
+                      exp: { type: string, example: "2025-07-13T10:00:00Z" }
+        '401':
+          description: Token inválido o expirado
+        '500':
+          description: Error interno
